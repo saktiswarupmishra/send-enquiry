@@ -8,16 +8,23 @@ datasource db {
 }
 
 model Enquiry {
-  id          Int      @id @default(autoincrement())
-  destination String?
-  tripType    String?
-  vehicleType String?
-  vehicleName String?
-  pickupPoint String?
-  stops       String?  @db.Text
-  fullName    String?
-  phone       String?
-  email       String?
-  notes       String?  @db.Text
-  createdAt   DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  serviceType  String?
+  destination  String?
+  tripType     String?
+  vehicleType  String?
+  vehicleName  String?
+  pickupPoint  String?
+  dropPoint    String?
+  stops        String?  @db.Text
+  travelDate   String?
+  travelTime   String?
+  passengers   Int?
+  flightNumber String?
+  airportName  String?
+  fullName     String?
+  phone        String?
+  email        String?
+  notes        String?  @db.Text
+  createdAt    DateTime @default(now())
 }

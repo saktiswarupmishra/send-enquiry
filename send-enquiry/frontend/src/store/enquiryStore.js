@@ -4,12 +4,19 @@ import axios from 'axios'
 
 export const useEnquiryStore = defineStore('enquiry', () => {
   const form = ref({
+    serviceType: 'local',
     destination: '',
     tripType: '',
     vehicleType: '',
     vehicleName: '',
     pickupPoint: '',
+    dropPoint: '',
     stops: [],
+    travelDate: '',
+    travelTime: '',
+    passengers: '',
+    flightNumber: '',
+    airportName: '',
     fullName: '',
     phone: '',
     email: '',
@@ -24,6 +31,28 @@ export const useEnquiryStore = defineStore('enquiry', () => {
     form.value.stops.splice(index, 1)
   }
 
+  const resetForm = () => {
+    form.value = {
+      serviceType: 'local',
+      destination: '',
+      tripType: '',
+      vehicleType: '',
+      vehicleName: '',
+      pickupPoint: '',
+      dropPoint: '',
+      stops: ['', ''],
+      travelDate: '',
+      travelTime: '',
+      passengers: '',
+      flightNumber: '',
+      airportName: '',
+      fullName: '',
+      phone: '',
+      email: '',
+      notes: ''
+    }
+  }
+
   const submitEnquiry = async () => {
     try {
       const payload = { ...form.value, stops: JSON.stringify(form.value.stops) }
@@ -35,5 +64,5 @@ export const useEnquiryStore = defineStore('enquiry', () => {
     }
   }
 
-  return { form, addStop, removeStop, submitEnquiry }
+  return { form, addStop, removeStop, resetForm, submitEnquiry }
 })

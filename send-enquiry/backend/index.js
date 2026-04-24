@@ -12,12 +12,19 @@ app.post('/api/enquiries', async (c) => {
     const body = await c.req.json()
     const enquiry = await prisma.enquiry.create({
       data: {
+        serviceType: body.serviceType || '',
         destination: body.destination || '',
         tripType: body.tripType || '',
         vehicleType: body.vehicleType || '',
         vehicleName: body.vehicleName || '',
         pickupPoint: body.pickupPoint || '',
+        dropPoint: body.dropPoint || '',
         stops: typeof body.stops === 'string' ? body.stops : JSON.stringify(body.stops || []),
+        travelDate: body.travelDate || '',
+        travelTime: body.travelTime || '',
+        passengers: body.passengers ? parseInt(body.passengers) : null,
+        flightNumber: body.flightNumber || '',
+        airportName: body.airportName || '',
         fullName: body.fullName || '',
         phone: body.phone || '',
         email: body.email || '',

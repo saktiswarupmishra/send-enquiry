@@ -1,44 +1,142 @@
 <template>
-  <v-card class="pa-8 rounded-xl elevation-0 form-card">
-    <v-form @submit.prevent="submitForm">
-      <!-- Section 1 -->
-      <div class="d-flex align-center mb-6">
-        <v-avatar color="#EDF0E8" size="32" class="mr-3 font-weight-bold" style="color: #6A8D3F;">1</v-avatar>
-        <h2 class="text-h6 font-weight-bold mb-0 text-grey-darken-4">Vehicle Details</h2>
+  <v-card class="form-card pa-0 rounded-xl elevation-0">
+    <!-- Progress Bar -->
+    <div class="progress-bar-wrapper">
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" :style="{ width: progressPercent + '%' }"></div>
       </div>
-      
-      <v-row dense class="mb-2">
-        <v-col cols="12" sm="6">
-          <p class="text-caption text-grey-darken-1 font-weight-medium mb-1">Destination</p>
-          <v-select
-            v-model="store.form.destination"
-            :items="['Local City Travel', 'Outstation']"
-            placeholder="Select Destination"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            bg-color="white"
-            class="custom-input"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <p class="text-caption text-grey-darken-1 font-weight-medium mb-1">Trip Type</p>
-          <v-select
-            v-model="store.form.tripType"
-            :items="['4hrs/40km', '8hrs/80km', '12hrs/120km', '16hrs/160km', '24hrs/200km']"
-            placeholder="Select Trip Type"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            bg-color="white"
-            class="custom-input"
-          ></v-select>
-        </v-col>
-      </v-row>
+      <p class="text-caption text-grey-darken-1 mt-2 mb-0 text-right font-weight-medium">
+        {{ progressPercent }}% completed
+      </p>
+    </div>
 
-      <v-row dense class="mb-4">
-        <v-col cols="12" sm="6">
-            <p class="text-caption text-grey-darken-1 font-weight-medium mb-1">Vehicle Type</p>
+    <v-form @submit.prevent="submitForm">
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 1: Service Type -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="section-block section-1-bg">
+        <div class="d-flex align-center mb-5">
+          <div class="step-indicator" :class="{ active: true }">
+            <v-icon size="18" color="white">mdi-map-marker-path</v-icon>
+          </div>
+          <div class="ml-3">
+            <h2 class="section-title mb-0">Choose Your Service</h2>
+            <p class="text-caption text-grey-darken-1 mb-0">Select the type of travel you need</p>
+          </div>
+        </div>
+
+        <v-row dense>
+          <v-col cols="12" sm="4" v-for="service in serviceTypes" :key="service.value">
+            <div
+              class="service-card"
+              :class="{ selected: store.form.serviceType === service.value }"
+              @click="store.form.serviceType = service.value"
+            >
+              <div class="service-card-icon" :class="{ 'icon-active': store.form.serviceType === service.value }">
+                <v-icon size="28" :color="store.form.serviceType === service.value ? 'white' : '#709C34'">{{ service.icon }}</v-icon>
+              </div>
+              <h3 class="service-card-title">{{ service.label }}</h3>
+              <p class="service-card-desc">{{ service.desc }}</p>
+              <div class="service-check" v-if="store.form.serviceType === service.value">
+                <v-icon size="16" color="white">mdi-check</v-icon>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
+      </div>
+
+      <!-- Section divider -->
+      <div class="section-divider">
+        <div class="divider-line"></div>
+        <v-icon size="20" color="#709C34" class="divider-icon">mdi-chevron-down</v-icon>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 2: Vehicle Details -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="section-block">
+        <div class="d-flex align-center mb-5">
+          <div class="step-indicator" :class="{ active: store.form.serviceType }">
+            <v-icon size="18" color="white">mdi-bus</v-icon>
+          </div>
+          <div class="ml-3">
+            <h2 class="section-title mb-0">Vehicle Details</h2>
+            <p class="text-caption text-grey-darken-1 mb-0">Configure your ride preferences</p>
+          </div>
+        </div>
+
+        <!-- Airport-specific fields (animated reveal) -->
+        <transition name="slide-fade">
+          <div v-if="store.form.serviceType === 'airport'" class="airport-highlight mb-5">
+            <div class="d-flex align-center mb-3">
+              <v-icon color="#1565C0" size="20" class="mr-2">mdi-airplane</v-icon>
+              <span class="font-weight-bold text-blue-darken-3 text-body-2">Airport Transfer Details</span>
+            </div>
+            <v-row dense>
+              <v-col cols="12" sm="6">
+                <label class="field-label">Airport Name</label>
+                <v-select
+                  v-model="store.form.airportName"
+                  :items="['Indira Gandhi International Airport (DEL)', 'Chhatrapati Shivaji Airport (BOM)', 'Kempegowda International Airport (BLR)', 'Rajiv Gandhi International Airport (HYD)', 'Chennai International Airport (MAA)', 'Netaji Subhash Chandra Bose Airport (CCU)', 'Other']"
+                  placeholder="Select Airport"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                ></v-select>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label class="field-label">Flight Number <span class="text-grey">(optional)</span></label>
+                <v-text-field
+                  v-model="store.form.flightNumber"
+                  placeholder="e.g. AI-302"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-airplane-takeoff"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </div>
+        </transition>
+
+        <v-row dense class="mb-2">
+          <v-col cols="12" sm="6">
+            <label class="field-label">Destination</label>
+            <v-select
+              v-model="store.form.destination"
+              :items="destinationItems"
+              placeholder="Select Destination"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <label class="field-label">Trip Type</label>
+            <v-select
+              v-model="store.form.tripType"
+              :items="tripTypeItems"
+              placeholder="Select Trip Type"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+            ></v-select>
+          </v-col>
+        </v-row>
+
+        <v-row dense class="mb-2">
+          <v-col cols="12" sm="6">
+            <label class="field-label">Vehicle Type</label>
             <v-select
               v-model="store.form.vehicleType"
               :items="['AC Seater Buses', 'AC Sleeper Buses', 'Traveller / Minivan', 'Car / SUV / Sedan']"
@@ -47,141 +145,348 @@
               density="comfortable"
               hide-details
               bg-color="white"
-              class="custom-input"
+              class="premium-input"
             ></v-select>
-        </v-col>
-        <v-col cols="12" sm="6">
-            <p class="text-caption text-grey-darken-1 font-weight-medium mb-1">Vehicle Name</p>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <label class="field-label">Vehicle Name</label>
             <v-select
               v-model="store.form.vehicleName"
-              :items="['9 Seater (1+1) Maharaja Force Motor', '9 Seater (1+1) Maharaja Urbania', '12 Seater (1+1) Maharaja Force Motor', '12 Seater (2+1) Luxury Force Motor', '12 Seater (2+1) Luxury Urbania', '16 Seater (2+1) Luxury Force Motor', '16 Seater (2+1) Luxury Urbania', '20 Seater (2+1) Luxury Force Motor', '25 Seater (2+2) Luxury Force Motor']"
+              :items="vehicleNameItems"
               placeholder="Select Vehicle Name"
               variant="outlined"
               density="comfortable"
               hide-details
               bg-color="white"
-              class="custom-input"
+              class="premium-input"
             ></v-select>
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
+      </div>
 
-      <v-row dense class="mb-2">
-        <v-col cols="12">
-          <v-text-field
-            v-model="store.form.pickupPoint"
-            placeholder="Enter Pickup Point"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            bg-color="white"
-            class="custom-input"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-        
-      <!-- Stops -->
-      <v-row dense v-for="(stop, index) in store.form.stops" :key="index" class="mb-2">
-        <v-col cols="12">
-          <div class="position-relative">
+      <!-- Section divider -->
+      <div class="section-divider">
+        <div class="divider-line"></div>
+        <v-icon size="20" color="#709C34" class="divider-icon">mdi-chevron-down</v-icon>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 3: Trip Details -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="section-block section-3-bg">
+        <div class="d-flex align-center mb-5">
+          <div class="step-indicator" :class="{ active: store.form.vehicleType || store.form.destination }">
+            <v-icon size="18" color="white">mdi-calendar-clock</v-icon>
+          </div>
+          <div class="ml-3">
+            <h2 class="section-title mb-0">Trip Details</h2>
+            <p class="text-caption text-grey-darken-1 mb-0">When and where are you traveling?</p>
+          </div>
+        </div>
+
+        <v-row dense class="mb-2">
+          <v-col cols="12" sm="4">
+            <label class="field-label">Travel Date</label>
             <v-text-field
-              v-model="store.form.stops[index]"
-              :placeholder="`Add Stop ${index + 1}`"
+              v-model="store.form.travelDate"
+              type="date"
               variant="outlined"
               density="comfortable"
               hide-details
               bg-color="white"
-              class="custom-input pr-12"
+              class="premium-input"
+              prepend-inner-icon="mdi-calendar"
             ></v-text-field>
-            <a href="#" @click.prevent="store.removeStop(index)" class="text-error text-caption text-decoration-none font-weight-medium position-absolute" style="top: 14px; right: 16px;">Remove</a>
-          </div>
-        </v-col>
-      </v-row>
-      
-      <v-row dense>
-        <v-col cols="12" class="text-right pb-4 pt-1 cursor-pointer">
-          <a href="#" @click.prevent="store.addStop" class="text-grey-darken-2 font-weight-medium text-decoration-none text-body-2">Add Stop</a>
-        </v-col>
-      </v-row>
+          </v-col>
+          <v-col cols="12" sm="4">
+            <label class="field-label">Travel Time</label>
+            <v-text-field
+              v-model="store.form.travelTime"
+              type="time"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+              prepend-inner-icon="mdi-clock-outline"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" sm="4">
+            <label class="field-label">No. of Passengers</label>
+            <v-text-field
+              v-model="store.form.passengers"
+              type="number"
+              placeholder="e.g. 12"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+              prepend-inner-icon="mdi-account-group"
+              min="1"
+            ></v-text-field>
+          </v-col>
+        </v-row>
 
-      <!-- Section 2 -->
-      <div class="d-flex align-center mb-6 mt-4">
-        <v-avatar color="#EDF0E8" size="32" class="mr-3 font-weight-bold" style="color: #6A8D3F;">2</v-avatar>
-        <h2 class="text-h6 font-weight-bold mb-0 text-grey-darken-4">Customer Information</h2>
+        <v-row dense class="mb-2">
+          <v-col cols="12" sm="6">
+            <label class="field-label">Pickup Point</label>
+            <v-text-field
+              v-model="store.form.pickupPoint"
+              placeholder="Enter pickup location"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+              prepend-inner-icon="mdi-map-marker"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <label class="field-label">Drop-off Point</label>
+            <v-text-field
+              v-model="store.form.dropPoint"
+              placeholder="Enter drop-off location"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+              prepend-inner-icon="mdi-map-marker-check"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <!-- Stops -->
+        <div class="stops-container mt-3" v-if="store.form.stops.length > 0">
+          <label class="field-label d-flex align-center">
+            <v-icon size="16" color="#709C34" class="mr-1">mdi-dots-vertical</v-icon>
+            Intermediate Stops
+          </label>
+          <div v-for="(stop, index) in store.form.stops" :key="index" class="stop-row mb-2">
+            <v-text-field
+              v-model="store.form.stops[index]"
+              :placeholder="`Stop ${index + 1}`"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+              prepend-inner-icon="mdi-circle-small"
+            >
+              <template v-slot:append-inner>
+                <v-btn
+                  icon
+                  variant="text"
+                  size="x-small"
+                  color="error"
+                  @click="store.removeStop(index)"
+                  class="stop-remove-btn"
+                >
+                  <v-icon size="18">mdi-close-circle</v-icon>
+                </v-btn>
+              </template>
+            </v-text-field>
+          </div>
+        </div>
+
+        <div class="text-right mt-2">
+          <v-btn
+            variant="tonal"
+            color="#709C34"
+            size="small"
+            @click="store.addStop"
+            class="rounded-lg text-capitalize font-weight-medium"
+            prepend-icon="mdi-plus"
+          >
+            Add Stop
+          </v-btn>
+        </div>
       </div>
 
-      <v-row dense class="mb-2">
-        <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="store.form.fullName"
-            placeholder="Full Name"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            bg-color="white"
-            class="custom-input"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="store.form.phone"
-            placeholder="Phone Number"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            bg-color="white"
-            class="custom-input"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      
-      <v-row dense class="mb-2">
-        <v-col cols="12">
-          <v-text-field
-            v-model="store.form.email"
-            placeholder="Official Email Address"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            bg-color="white"
-            class="custom-input"
-          ></v-text-field>
-        </v-col>
-      </v-row>
+      <!-- Section divider -->
+      <div class="section-divider">
+        <div class="divider-line"></div>
+        <v-icon size="20" color="#709C34" class="divider-icon">mdi-chevron-down</v-icon>
+        <div class="divider-line"></div>
+      </div>
 
-      <v-row dense>
-        <v-col cols="12">
-          <p class="text-caption text-grey-darken-4 font-weight-bold mb-2">NOTES</p>
-          <v-textarea
-            v-model="store.form.notes"
-            placeholder="Type Here . . ."
-            variant="outlined"
-            rows="3"
-            hide-details
-            bg-color="white"
-            class="custom-input"
-          ></v-textarea>
-        </v-col>
-      </v-row>
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- SECTION 4: Customer Information -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="section-block">
+        <div class="d-flex align-center mb-5">
+          <div class="step-indicator" :class="{ active: store.form.pickupPoint || store.form.travelDate }">
+            <v-icon size="18" color="white">mdi-account-circle</v-icon>
+          </div>
+          <div class="ml-3">
+            <h2 class="section-title mb-0">Your Information</h2>
+            <p class="text-caption text-grey-darken-1 mb-0">How can we reach you?</p>
+          </div>
+        </div>
 
-      <v-btn
-        color="#709C34"
-        size="x-large"
-        type="submit"
-        block
-        class="mt-8 font-weight-bold text-white rounded-lg elevation-0"
-      >
-        SEND ENQUIRY <v-icon right class="ml-2">mdi-arrow-right</v-icon>
-      </v-btn>
-      <p class="text-center text-caption text-grey mt-3 mb-0">After clicking "Send Enquiry", you will receive a call from Ant Travels for quotation.</p>
+        <v-row dense class="mb-2">
+          <v-col cols="12" sm="6">
+            <label class="field-label">Full Name</label>
+            <v-text-field
+              v-model="store.form.fullName"
+              placeholder="Your Name"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+              prepend-inner-icon="mdi-account-outline"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <label class="field-label">Phone Number</label>
+            <v-text-field
+              v-model="store.form.phone"
+              placeholder="+91 1234567897"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+              prepend-inner-icon="mdi-phone-outline"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <v-row dense class="mb-2">
+          <v-col cols="12">
+            <label class="field-label">Email Address</label>
+            <v-text-field
+              v-model="store.form.email"
+              placeholder="you@company.com"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+              prepend-inner-icon="mdi-email-outline"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <v-row dense>
+          <v-col cols="12">
+            <label class="field-label d-flex align-center">
+              <v-icon size="14" color="#709C34" class="mr-1">mdi-note-text-outline</v-icon>
+              Additional Notes
+            </label>
+            <v-textarea
+              v-model="store.form.notes"
+              placeholder="Any special requests, luggage details, accessibility needs..."
+              variant="outlined"
+              rows="3"
+              hide-details
+              bg-color="white"
+              class="premium-input"
+            ></v-textarea>
+          </v-col>
+        </v-row>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="submit-section">
+        <v-btn
+          color="#709C34"
+          size="x-large"
+          type="submit"
+          block
+          class="submit-btn font-weight-bold text-white rounded-xl elevation-0"
+          :loading="submitting"
+        >
+          <v-icon left class="mr-2">mdi-send</v-icon>
+          SEND ENQUIRY
+          <v-icon right class="ml-2">mdi-arrow-right</v-icon>
+        </v-btn>
+        <div class="d-flex align-center justify-center mt-4">
+          <v-icon size="14" color="grey" class="mr-1">mdi-shield-check</v-icon>
+          <p class="text-caption text-grey mb-0">
+            Your information is secure. After submitting, Ant Travels will call you with a quotation.
+          </p>
+        </div>
+      </div>
     </v-form>
+
+    <!-- Success Overlay -->
+    <transition name="fade">
+      <div v-if="showSuccess" class="success-overlay">
+        <div class="success-content">
+          <div class="success-icon-ring">
+            <v-icon size="48" color="#709C34">mdi-check-circle</v-icon>
+          </div>
+          <h3 class="text-h5 font-weight-bold mt-4 mb-2">Enquiry Sent!</h3>
+          <p class="text-body-2 text-grey-darken-1">We'll get back to you shortly with a quotation.</p>
+        </div>
+      </div>
+    </transition>
   </v-card>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useEnquiryStore } from '../store/enquiryStore'
 
 const store = useEnquiryStore()
+const submitting = ref(false)
+const showSuccess = ref(false)
+
+const serviceTypes = [
+  { value: 'local', label: 'Local & Outstation', icon: 'mdi-map-marker-distance', desc: 'City travel or intercity trips' },
+  { value: 'airport', label: 'Airport Transfer', icon: 'mdi-airplane-takeoff', desc: 'Pickup & drop to any airport' },
+  { value: 'special', label: 'Wedding & Corporate', icon: 'mdi-star-circle', desc: 'Premium event transportation' },
+]
+
+const destinationItems = computed(() => {
+  if (store.form.serviceType === 'airport') {
+    return ['Airport Pickup', 'Airport Drop-off', 'Airport Round Trip']
+  }
+  return ['Local City Travel', 'Outstation']
+})
+
+const tripTypeItems = computed(() => {
+  if (store.form.serviceType === 'airport') {
+    return ['One Way', 'Round Trip', 'Multi-City']
+  }
+  return ['4hrs/40km', '8hrs/80km', '12hrs/120km', '16hrs/160km', '24hrs/200km']
+})
+
+const vehicleNameItems = [
+  '9 Seater (1+1) Maharaja Force Motor',
+  '9 Seater (1+1) Maharaja Urbania',
+  '12 Seater (1+1) Maharaja Force Motor',
+  '12 Seater (2+1) Luxury Force Motor',
+  '12 Seater (2+1) Luxury Urbania',
+  '16 Seater (2+1) Luxury Force Motor',
+  '16 Seater (2+1) Luxury Urbania',
+  '20 Seater (2+1) Luxury Force Motor',
+  '25 Seater (2+2) Luxury Force Motor'
+]
+
+const progressPercent = computed(() => {
+  const fields = [
+    store.form.serviceType,
+    store.form.destination,
+    store.form.tripType,
+    store.form.vehicleType,
+    store.form.vehicleName,
+    store.form.pickupPoint,
+    store.form.dropPoint,
+    store.form.travelDate,
+    store.form.travelTime,
+    store.form.passengers,
+    store.form.fullName,
+    store.form.phone,
+    store.form.email,
+  ]
+  const filled = fields.filter(f => f && String(f).trim()).length
+  return Math.round((filled / fields.length) * 100)
+})
 
 onMounted(() => {
   if (store.form.stops.length === 0) {
@@ -191,37 +496,329 @@ onMounted(() => {
 })
 
 const submitForm = async () => {
+  submitting.value = true
   const res = await store.submitEnquiry()
+  submitting.value = false
   if (res.success) {
-    alert('Enquiry submitted successfully!')
-    store.form = {
-      destination: '', tripType: '', vehicleType: '', vehicleName: '',
-      pickupPoint: '', stops: ['', ''], fullName: '', phone: '', email: '', notes: ''
-    }
+    showSuccess.value = true
+    setTimeout(() => {
+      showSuccess.value = false
+      store.resetForm()
+    }, 2500)
   } else {
-    alert('Failed to submit enquiry.')
+    alert('Failed to submit enquiry. Please try again.')
   }
 }
 </script>
 
 <style scoped>
+/* ── Card Container ────────────────────────── */
 .form-card {
-  background-color: white;
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Progress Bar ────────────────────────── */
+.progress-bar-wrapper {
+  padding: 24px 32px 0;
+}
+.progress-bar-track {
+  height: 6px;
+  background: #ECEFF1;
   border-radius: 20px;
+  overflow: hidden;
 }
-.custom-input :deep(.v-field__outline__start) {
-  border-color: #E0E0E0 !important;
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #709C34, #A4D65E);
+  border-radius: 20px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.custom-input :deep(.v-field__outline__end) {
-  border-color: #E0E0E0 !important;
+
+/* ── Sections ────────────────────────── */
+.section-block {
+  padding: 28px 32px;
 }
-.custom-input :deep(.v-field__outline__notch::before) {
-  border-color: #E0E0E0 !important;
+.section-1-bg {
+  background: linear-gradient(135deg, #fafcf7 0%, #f5f8f0 100%);
 }
-.custom-input :deep(.v-field__outline__notch::after) {
-  border-color: #E0E0E0 !important;
+.section-3-bg {
+  background: linear-gradient(135deg, #f7f9fc 0%, #f0f4f8 100%);
 }
-.custom-input :deep(.v-field) {
-  border-radius: 8px;
+
+/* ── Step Indicators ────────────────────────── */
+.step-indicator {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #C5C9CC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.step-indicator.active {
+  background: linear-gradient(135deg, #709C34, #8BBF45);
+  box-shadow: 0 4px 14px rgba(112, 156, 52, 0.35);
+  transform: scale(1.05);
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #263238;
+  letter-spacing: -0.3px;
+}
+
+/* ── Section Dividers ────────────────────────── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+}
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #D5DAD0, transparent);
+}
+.divider-icon {
+  margin: 0 8px;
+  opacity: 0.6;
+  animation: bounce-subtle 2s infinite;
+}
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+/* ── Service Cards ────────────────────────── */
+.service-card {
+  border: 2px solid #E8ECE3;
+  border-radius: 16px;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  background: white;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.service-card:hover {
+  border-color: #B0CC8E;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(112, 156, 52, 0.12);
+}
+.service-card.selected {
+  border-color: #709C34;
+  background: linear-gradient(145deg, #f2f9ea 0%, #e8f5d8 100%);
+  box-shadow: 0 6px 20px rgba(112, 156, 52, 0.2);
+}
+.service-card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: #EDF3E2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.service-card-icon.icon-active {
+  background: linear-gradient(135deg, #709C34, #8BBF45);
+  box-shadow: 0 4px 14px rgba(112, 156, 52, 0.35);
+  transform: scale(1.1);
+}
+.service-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #263238;
+  margin-bottom: 4px;
+}
+.service-card-desc {
+  font-size: 11px;
+  color: #78909C;
+  margin-bottom: 0;
+  line-height: 1.4;
+}
+.service-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #709C34;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pop-in 0.3s ease;
+}
+@keyframes pop-in {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* ── Airport Highlight ────────────────────────── */
+.airport-highlight {
+  background: linear-gradient(135deg, #E3F2FD, #BBDEFB33);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #90CAF9;
+}
+
+/* ── Field Labels ────────────────────────── */
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #546E7A;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+/* ── Premium Inputs ────────────────────────── */
+.premium-input :deep(.v-field__outline__start) {
+  border-color: #DDE3D5 !important;
+}
+.premium-input :deep(.v-field__outline__end) {
+  border-color: #DDE3D5 !important;
+}
+.premium-input :deep(.v-field__outline__notch::before) {
+  border-color: #DDE3D5 !important;
+}
+.premium-input :deep(.v-field__outline__notch::after) {
+  border-color: #DDE3D5 !important;
+}
+.premium-input :deep(.v-field) {
+  border-radius: 12px;
+  transition: box-shadow 0.3s ease;
+}
+.premium-input :deep(.v-field:hover) {
+  box-shadow: 0 2px 12px rgba(112, 156, 52, 0.1);
+}
+.premium-input :deep(.v-field--focused) {
+  box-shadow: 0 0 0 3px rgba(112, 156, 52, 0.15) !important;
+}
+.premium-input :deep(.v-field--focused .v-field__outline__start) {
+  border-color: #709C34 !important;
+}
+.premium-input :deep(.v-field--focused .v-field__outline__end) {
+  border-color: #709C34 !important;
+}
+
+/* ── Stops ────────────────────────── */
+.stops-container {
+  padding: 16px;
+  background: #F8FAFB;
+  border-radius: 14px;
+  border: 1px dashed #CFD8DC;
+}
+.stop-remove-btn {
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+.stop-remove-btn:hover {
+  opacity: 1;
+}
+
+/* ── Submit Section ────────────────────────── */
+.submit-section {
+  padding: 24px 32px 32px;
+}
+.submit-btn {
+  height: 56px !important;
+  font-size: 16px !important;
+  letter-spacing: 1.5px;
+  background: linear-gradient(135deg, #709C34 0%, #8BBF45 100%) !important;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(112, 156, 52, 0.3) !important;
+}
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(112, 156, 52, 0.4) !important;
+}
+
+/* ── Success Overlay ────────────────────────── */
+.success-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 24px;
+}
+.success-content {
+  text-align: center;
+}
+.success-icon-ring {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #EDF3E2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: pop-in 0.4s ease;
+}
+
+/* ── Transitions ────────────────────────── */
+.slide-fade-enter-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide-fade-leave-active {
+  transition: all 0.25s ease;
+}
+.slide-fade-enter-from {
+  opacity: 0;
+  transform: translateY(-12px);
+  max-height: 0;
+}
+.slide-fade-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 300px;
+}
+.slide-fade-leave-from {
+  opacity: 1;
+  max-height: 300px;
+}
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+  max-height: 0;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+/* ── Responsive adjustments ────────────────── */
+@media (max-width: 600px) {
+  .section-block {
+    padding: 20px 16px;
+  }
+  .progress-bar-wrapper {
+    padding: 16px 16px 0;
+  }
+  .submit-section {
+    padding: 16px 16px 24px;
+  }
+  .section-divider {
+    padding: 0 16px;
+  }
+  .service-card {
+    padding: 14px 12px;
+  }
 }
 </style>
