@@ -42,17 +42,19 @@
     </v-card>
 
     <!-- 4 Stats Cards Grid -->
-    <v-row dense class="mx-0 mt-1">
-      <v-col cols="6" v-for="(badge, index) in badges" :key="index" class="pa-2">
-        <v-card class="pa-4 fill-height d-flex flex-column rounded-xl elevation-1 stats-card">
-          <v-avatar :color="badge.bg" size="32" class="mb-3">
-             <v-icon :color="badge.color" size="18">{{ badge.icon }}</v-icon>
-          </v-avatar>
-          <p class="font-weight-black mb-1 text-subtitle-1 text-grey-darken-4" style="line-height: 1.2;">{{ badge.value }}</p>
-          <p class="text-caption text-uppercase text-grey-darken-1 font-weight-medium mb-0" style="font-size: 10px !important; letter-spacing: 0.5px;">{{ badge.label }}</p>
-        </v-card>
-      </v-col>
-    </v-row>
+    <div class="pa-2 mx-1 mt-1 rounded-xl" style="background-color: #E6E8EA;">
+      <v-row dense>
+        <v-col cols="6" v-for="(badge, index) in badges" :key="index" class="pa-2">
+          <v-card class="pa-5 d-flex flex-column elevation-0 bg-white" style="border-radius: 20px; min-height: 220px;">
+            <v-avatar :color="badge.bg" size="36" class="mb-4">
+               <v-icon :color="badge.color" size="20">{{ badge.icon }}</v-icon>
+            </v-avatar>
+            <p class="font-weight-bold mb-1 text-grey-darken-4" style="font-size: 18px; line-height: 1.2;">{{ badge.value }}</p>
+            <p class="text-uppercase font-weight-medium mb-0" style="font-size: 11px; letter-spacing: 0.5px; color: #78909C;">{{ badge.label }}</p>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
 
     <!-- Reviews -->
     <div class="d-flex align-center justify-space-between px-4 my-2">
