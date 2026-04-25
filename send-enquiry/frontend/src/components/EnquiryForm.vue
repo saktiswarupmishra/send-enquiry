@@ -7,7 +7,7 @@
         <div
           class="step-pill"
           :class="{ active: currentStep === 1, completed: currentStep > 1 }"
-          @click="currentStep = 1"
+          @click="goToStep(1)"
         >
           <div class="pill-number">
             <v-icon v-if="currentStep > 1" size="16" color="white">mdi-check</v-icon>
@@ -18,14 +18,27 @@
         <div class="step-connector" :class="{ active: currentStep > 1 }"></div>
         <div
           class="step-pill"
-          :class="{ active: currentStep === 2 }"
+          :class="{ active: currentStep === 2, completed: currentStep > 2 }"
+          @click="currentStep > 1 ? goToStep(2) : null"
         >
-          <div class="pill-number">2</div>
+          <div class="pill-number">
+            <v-icon v-if="currentStep > 2" size="16" color="white">mdi-check</v-icon>
+            <span v-else>2</span>
+          </div>
+          <span class="pill-label">Service</span>
+        </div>
+        <div class="step-connector" :class="{ active: currentStep > 2 }"></div>
+        <div
+          class="step-pill"
+          :class="{ active: currentStep === 3 }"
+          @click="currentStep > 2 ? goToStep(3) : null"
+        >
+          <div class="pill-number">3</div>
           <span class="pill-label">Trip Details</span>
         </div>
       </div>
       <p class="text-caption text-grey-darken-1 mt-3 mb-0 text-center font-weight-medium">
-        Step {{ currentStep }} of 2 &mdash; {{ progressPercent }}% completed
+        Step {{ currentStep }} of 3 &mdash; {{ progressPercent }}% completed
       </p>
     </div>
 
@@ -118,7 +131,7 @@
               size="x-large"
               block
               class="submit-btn font-weight-bold text-white rounded-xl elevation-0"
-              @click="goToStep2"
+              @click="goToStep(2)"
             >
               NEXT
               <v-icon right class="ml-2">mdi-arrow-right</v-icon>
@@ -128,7 +141,7 @@
       </transition>
 
       <!-- ═══════════════════════════════════════════════ -->
-      <!-- STEP 2: Service + Vehicle + Trip Details        -->
+      <!-- STEP 2: Service + Vehicle                       -->
       <!-- ═══════════════════════════════════════════════ -->
       <transition :name="transitionName" mode="out-in">
         <div v-if="currentStep === 2" key="step2">
@@ -281,12 +294,40 @@
             </v-row>
           </div>
 
-          <!-- Section divider -->
-          <div class="section-divider">
-            <div class="divider-line"></div>
-            <v-icon size="20" color="#709C34" class="divider-icon">mdi-chevron-down</v-icon>
-            <div class="divider-line"></div>
+          <!-- Submit Section for Step 2 -->
+          <div class="submit-section">
+            <div class="d-flex ga-3">
+              <v-btn
+                variant="outlined"
+                color="#709C34"
+                size="x-large"
+                class="back-btn font-weight-bold rounded-xl elevation-0"
+                @click="goToStep(1)"
+                style="flex: 0 0 auto; min-width: 140px;"
+              >
+                <v-icon left class="mr-2">mdi-arrow-left</v-icon>
+                BACK
+              </v-btn>
+              <v-btn
+                color="#709C34"
+                size="x-large"
+                class="submit-btn font-weight-bold text-white rounded-xl elevation-0"
+                @click="goToStep(3)"
+                style="flex: 1;"
+              >
+                NEXT
+                <v-icon right class="ml-2">mdi-arrow-right</v-icon>
+              </v-btn>
+            </div>
           </div>
+        </div>
+      </transition>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- STEP 3: Trip Details                            -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <transition :name="transitionName" mode="out-in">
+        <div v-if="currentStep === 3" key="step3">
 
           <!-- SECTION: Trip Details -->
           <div class="section-block section-3-bg">
@@ -428,7 +469,7 @@
                 color="#709C34"
                 size="x-large"
                 class="back-btn font-weight-bold rounded-xl elevation-0"
-                @click="goToStep1"
+                @click="goToStep(2)"
                 style="flex: 0 0 auto; min-width: 140px;"
               >
                 <v-icon left class="mr-2">mdi-arrow-left</v-icon>
@@ -483,14 +524,13 @@ const showSuccess = ref(false)
 const currentStep = ref(1)
 const transitionName = ref('step-slide-left')
 
-const goToStep2 = () => {
-  transitionName.value = 'step-slide-left'
-  currentStep.value = 2
-}
-
-const goToStep1 = () => {
-  transitionName.value = 'step-slide-right'
-  currentStep.value = 1
+const goToStep = (step) => {
+  if (step > currentStep.value) {
+    transitionName.value = 'step-slide-left'
+  } else if (step < currentStep.value) {
+    transitionName.value = 'step-slide-right'
+  }
+  currentStep.value = step
 }
 
 const serviceTypes = [

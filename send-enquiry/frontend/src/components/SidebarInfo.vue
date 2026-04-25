@@ -32,25 +32,20 @@
       </div>
     </v-card>
 
-    <!-- Bus Image Card -->
-    <v-card class="rounded-xl overflow-hidden mx-1" style="box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;">
-      <v-img
-        src="/bus.jpg"
-        height="350"
-        cover
-      ></v-img>
-    </v-card>
+
 
     <!-- 4 Stats Cards Grid -->
     <div class="pa-2 mx-1 mt-1 rounded-xl" style="background-color: #E6E8EA;">
       <v-row dense>
-        <v-col cols="6" v-for="(badge, index) in badges" :key="index" class="pa-2">
-          <v-card class="pa-5 d-flex flex-column elevation-0 bg-white" style="border-radius: 20px; min-height: 220px;">
-            <v-avatar :color="badge.bg" size="36" class="mb-4">
-               <v-icon :color="badge.color" size="20">{{ badge.icon }}</v-icon>
+        <v-col cols="6" v-for="(badge, index) in badges" :key="index" class="pa-1">
+          <v-card class="pa-3 d-flex align-center elevation-0 bg-white" style="border-radius: 12px; min-height: 60px;">
+            <v-avatar :color="badge.bg" size="32" class="mr-3">
+               <v-icon :color="badge.color" size="16">{{ badge.icon }}</v-icon>
             </v-avatar>
-            <p class="font-weight-bold mb-1 text-grey-darken-4" style="font-size: 18px; line-height: 1.2;">{{ badge.value }}</p>
-            <p class="text-uppercase font-weight-medium mb-0" style="font-size: 11px; letter-spacing: 0.5px; color: #78909C;">{{ badge.label }}</p>
+            <div>
+              <p class="font-weight-bold mb-0 text-grey-darken-4" style="font-size: 13px; line-height: 1.1;">{{ badge.value }}</p>
+              <p class="text-uppercase font-weight-medium mb-0" style="font-size: 9px; letter-spacing: 0.5px; color: #78909C;">{{ badge.label }}</p>
+            </div>
           </v-card>
         </v-col>
       </v-row>
