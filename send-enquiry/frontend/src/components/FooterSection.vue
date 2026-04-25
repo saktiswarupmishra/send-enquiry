@@ -10,7 +10,7 @@
       <v-row class="mb-10">
         <!-- Pilgrimage Tours -->
         <v-col cols="12" sm="6" md="3">
-          <v-btn variant="outlined" color="#6A8D3F" class="rounded-pill font-weight-bold bg-white mb-6 w-100" style="text-transform: none;">
+          <v-btn variant="text" class="rounded-pill font-weight-bold mb-6 w-100 travel-category-btn" style="text-transform: none;">
             Pilgrimage Tours
           </v-btn>
           <ul class="list-unstyled custom-list pl-2">
@@ -21,7 +21,7 @@
         </v-col>
         <!-- Hill Station Tours -->
         <v-col cols="12" sm="6" md="3">
-          <v-btn variant="outlined" color="#6A8D3F" class="rounded-pill font-weight-bold bg-white mb-6 w-100" style="text-transform: none;">
+          <v-btn variant="text" class="rounded-pill font-weight-bold mb-6 w-100 travel-category-btn" style="text-transform: none;">
             Hill Station Tours
           </v-btn>
           <ul class="list-unstyled custom-list pl-2">
@@ -32,7 +32,7 @@
         </v-col>
         <!-- Rajasthan Tours -->
         <v-col cols="12" sm="6" md="3">
-          <v-btn variant="outlined" color="#6A8D3F" class="rounded-pill font-weight-bold bg-white mb-6 w-100" style="text-transform: none;">
+          <v-btn variant="text" class="rounded-pill font-weight-bold mb-6 w-100 travel-category-btn" style="text-transform: none;">
             Rajasthan Tours
           </v-btn>
           <ul class="list-unstyled custom-list pl-2">
@@ -43,7 +43,7 @@
         </v-col>
         <!-- Corporate & Event Rentals -->
         <v-col cols="12" sm="6" md="3">
-          <v-btn variant="outlined" color="#6A8D3F" class="rounded-pill font-weight-bold bg-white mb-6 w-100" style="text-transform: none;">
+          <v-btn variant="text" class="rounded-pill font-weight-bold mb-6 w-100 travel-category-btn" style="text-transform: none;">
             Corporate & Event Rentals
           </v-btn>
           <ul class="list-unstyled custom-list pl-2">
@@ -57,9 +57,7 @@
 
     <!-- Skyline Graphic -->
     <div class="skyline-container">
-      <div class="skyline text-center">
-        <v-img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Delhi_Skyline.svg" height="150" contain class="mb-n2 skyline-img"></v-img>
-      </div>
+      <v-img src="/skyline.png" class="skyline-img" cover></v-img>
     </div>
 
     <!-- Dark Footer -->
@@ -209,15 +207,27 @@ const corporateLinks = ref([
   border-radius: 50%;
 }
 
+/* Travel Category Buttons - merged with background */
+.travel-category-btn {
+  color: #6A8D3F !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 15px !important;
+}
+
 /* Skyline */
 .skyline-container {
   overflow: hidden;
   position: relative;
   width: 100%;
   background-color: #555555;
+  margin-bottom: -2px;
 }
 .skyline-img {
-  opacity: 0.4;
+  width: 100%;
+  height: 120px;
+  display: block;
 }
 
 /* Dark Footer */
