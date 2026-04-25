@@ -1,86 +1,234 @@
 <template>
   <v-card class="form-card pa-0 rounded-xl elevation-0">
-    <!-- Progress Bar -->
-    <div class="progress-bar-wrapper">
-      <div class="progress-bar-track">
-        <div class="progress-bar-fill" :style="{ width: progressPercent + '%' }"></div>
+
+    <!-- Step Indicator -->
+    <div class="step-header">
+      <div class="step-pills">
+        <div
+          class="step-pill"
+          :class="{ active: currentStep === 1, completed: currentStep > 1 }"
+          @click="currentStep = 1"
+        >
+          <div class="pill-number">
+            <v-icon v-if="currentStep > 1" size="16" color="white">mdi-check</v-icon>
+            <span v-else>1</span>
+          </div>
+          <span class="pill-label">Your Info</span>
+        </div>
+        <div class="step-connector" :class="{ active: currentStep > 1 }"></div>
+        <div
+          class="step-pill"
+          :class="{ active: currentStep === 2 }"
+        >
+          <div class="pill-number">2</div>
+          <span class="pill-label">Trip Details</span>
+        </div>
       </div>
-      <p class="text-caption text-grey-darken-1 mt-2 mb-0 text-right font-weight-medium">
-        {{ progressPercent }}% completed
+      <p class="text-caption text-grey-darken-1 mt-3 mb-0 text-center font-weight-medium">
+        Step {{ currentStep }} of 2 &mdash; {{ progressPercent }}% completed
       </p>
     </div>
 
     <v-form @submit.prevent="submitForm">
 
       <!-- ═══════════════════════════════════════════════ -->
-      <!-- SECTION 1: Service Type -->
+      <!-- STEP 1: Customer Information                    -->
       <!-- ═══════════════════════════════════════════════ -->
-      <div class="section-block section-1-bg">
-        <div class="d-flex align-center mb-5">
-          <div class="step-indicator" :class="{ active: true }">
-            <v-icon size="18" color="white">mdi-map-marker-path</v-icon>
-          </div>
-          <div class="ml-3">
-            <h2 class="section-title mb-0">Choose Your Service</h2>
-            <p class="text-caption text-grey-darken-1 mb-0">Select the type of travel you need</p>
-          </div>
-        </div>
-
-        <v-row dense>
-          <v-col cols="12" sm="4" v-for="service in serviceTypes" :key="service.value">
-            <div
-              class="service-card"
-              :class="{ selected: store.form.serviceType === service.value }"
-              @click="store.form.serviceType = service.value"
-            >
-              <div class="service-card-icon" :class="{ 'icon-active': store.form.serviceType === service.value }">
-                <v-icon size="28" :color="store.form.serviceType === service.value ? 'white' : '#709C34'">{{ service.icon }}</v-icon>
+      <transition :name="transitionName" mode="out-in">
+        <div v-if="currentStep === 1" key="step1">
+          <div class="section-block">
+            <div class="d-flex align-center mb-5">
+              <div class="step-indicator active">
+                <v-icon size="18" color="white">mdi-account-circle</v-icon>
               </div>
-              <h3 class="service-card-title">{{ service.label }}</h3>
-              <p class="service-card-desc">{{ service.desc }}</p>
-              <div class="service-check" v-if="store.form.serviceType === service.value">
-                <v-icon size="16" color="white">mdi-check</v-icon>
+              <div class="ml-3">
+                <h2 class="section-title mb-0">Your Information</h2>
+                <p class="text-caption text-grey-darken-1 mb-0">How can we reach you?</p>
               </div>
             </div>
-          </v-col>
-        </v-row>
-      </div>
 
-      <!-- Section divider -->
-      <div class="section-divider">
-        <div class="divider-line"></div>
-        <v-icon size="20" color="#709C34" class="divider-icon">mdi-chevron-down</v-icon>
-        <div class="divider-line"></div>
-      </div>
-
-      <!-- ═══════════════════════════════════════════════ -->
-      <!-- SECTION 2: Vehicle Details -->
-      <!-- ═══════════════════════════════════════════════ -->
-      <div class="section-block">
-        <div class="d-flex align-center mb-5">
-          <div class="step-indicator" :class="{ active: store.form.serviceType }">
-            <v-icon size="18" color="white">mdi-bus</v-icon>
-          </div>
-          <div class="ml-3">
-            <h2 class="section-title mb-0">Vehicle Details</h2>
-            <p class="text-caption text-grey-darken-1 mb-0">Configure your ride preferences</p>
-          </div>
-        </div>
-
-        <!-- Airport-specific fields (animated reveal) -->
-        <transition name="slide-fade">
-          <div v-if="store.form.serviceType === 'airport'" class="airport-highlight mb-5">
-            <div class="d-flex align-center mb-3">
-              <v-icon color="#1565C0" size="20" class="mr-2">mdi-airplane</v-icon>
-              <span class="font-weight-bold text-blue-darken-3 text-body-2">Airport Transfer Details</span>
-            </div>
-            <v-row dense>
+            <v-row dense class="mb-2">
               <v-col cols="12" sm="6">
-                <label class="field-label">Airport Name</label>
+                <label class="field-label">Full Name</label>
+                <v-text-field
+                  v-model="store.form.fullName"
+                  placeholder="Your Name"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-account-outline"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label class="field-label">Phone Number</label>
+                <v-text-field
+                  v-model="store.form.phone"
+                  placeholder="+91 1234567897"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-phone-outline"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <v-row dense class="mb-2">
+              <v-col cols="12">
+                <label class="field-label">Email Address</label>
+                <v-text-field
+                  v-model="store.form.email"
+                  placeholder="you@company.com"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-email-outline"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <v-row dense>
+              <v-col cols="12">
+                <label class="field-label d-flex align-center">
+                  <v-icon size="14" color="#709C34" class="mr-1">mdi-note-text-outline</v-icon>
+                  Additional Notes
+                </label>
+                <v-textarea
+                  v-model="store.form.notes"
+                  placeholder="Any special requests, luggage details, accessibility needs..."
+                  variant="outlined"
+                  rows="3"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+          </div>
+
+          <!-- Next Button -->
+          <div class="submit-section">
+            <v-btn
+              color="#709C34"
+              size="x-large"
+              block
+              class="submit-btn font-weight-bold text-white rounded-xl elevation-0"
+              @click="goToStep2"
+            >
+              NEXT
+              <v-icon right class="ml-2">mdi-arrow-right</v-icon>
+            </v-btn>
+          </div>
+        </div>
+      </transition>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- STEP 2: Service + Vehicle + Trip Details        -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <transition :name="transitionName" mode="out-in">
+        <div v-if="currentStep === 2" key="step2">
+
+          <!-- SECTION: Service Type -->
+          <div class="section-block section-1-bg">
+            <div class="d-flex align-center mb-5">
+              <div class="step-indicator" :class="{ active: true }">
+                <v-icon size="18" color="white">mdi-map-marker-path</v-icon>
+              </div>
+              <div class="ml-3">
+                <h2 class="section-title mb-0">Choose Your Service</h2>
+                <p class="text-caption text-grey-darken-1 mb-0">Select the type of travel you need</p>
+              </div>
+            </div>
+
+            <v-row dense>
+              <v-col cols="12" sm="4" v-for="service in serviceTypes" :key="service.value">
+                <div
+                  class="service-card"
+                  :class="{ selected: store.form.serviceType === service.value }"
+                  @click="store.form.serviceType = service.value"
+                >
+                  <div class="service-card-icon" :class="{ 'icon-active': store.form.serviceType === service.value }">
+                    <v-icon size="28" :color="store.form.serviceType === service.value ? 'white' : '#709C34'">{{ service.icon }}</v-icon>
+                  </div>
+                  <h3 class="service-card-title">{{ service.label }}</h3>
+                  <p class="service-card-desc">{{ service.desc }}</p>
+                  <div class="service-check" v-if="store.form.serviceType === service.value">
+                    <v-icon size="16" color="white">mdi-check</v-icon>
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+          </div>
+
+          <!-- Section divider -->
+          <div class="section-divider">
+            <div class="divider-line"></div>
+            <v-icon size="20" color="#709C34" class="divider-icon">mdi-chevron-down</v-icon>
+            <div class="divider-line"></div>
+          </div>
+
+          <!-- SECTION: Vehicle Details -->
+          <div class="section-block">
+            <div class="d-flex align-center mb-5">
+              <div class="step-indicator" :class="{ active: store.form.serviceType }">
+                <v-icon size="18" color="white">mdi-bus</v-icon>
+              </div>
+              <div class="ml-3">
+                <h2 class="section-title mb-0">Vehicle Details</h2>
+                <p class="text-caption text-grey-darken-1 mb-0">Configure your ride preferences</p>
+              </div>
+            </div>
+
+            <!-- Airport-specific fields (animated reveal) -->
+            <transition name="slide-fade">
+              <div v-if="store.form.serviceType === 'airport'" class="airport-highlight mb-5">
+                <div class="d-flex align-center mb-3">
+                  <v-icon color="#1565C0" size="20" class="mr-2">mdi-airplane</v-icon>
+                  <span class="font-weight-bold text-blue-darken-3 text-body-2">Airport Transfer Details</span>
+                </div>
+                <v-row dense>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">Airport Name</label>
+                    <v-select
+                      v-model="store.form.airportName"
+                      :items="['Indira Gandhi International Airport (DEL)', 'Chhatrapati Shivaji Airport (BOM)', 'Kempegowda International Airport (BLR)', 'Rajiv Gandhi International Airport (HYD)', 'Chennai International Airport (MAA)', 'Netaji Subhash Chandra Bose Airport (CCU)', 'Other']"
+                      placeholder="Select Airport"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">Flight Number <span class="text-grey">(optional)</span></label>
+                    <v-text-field
+                      v-model="store.form.flightNumber"
+                      placeholder="e.g. AI-302"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                      prepend-inner-icon="mdi-airplane-takeoff"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </div>
+            </transition>
+
+            <v-row dense class="mb-2">
+              <v-col cols="12" sm="6">
+                <label class="field-label">Destination</label>
                 <v-select
-                  v-model="store.form.airportName"
-                  :items="['Indira Gandhi International Airport (DEL)', 'Chhatrapati Shivaji Airport (BOM)', 'Kempegowda International Airport (BLR)', 'Rajiv Gandhi International Airport (HYD)', 'Chennai International Airport (MAA)', 'Netaji Subhash Chandra Bose Airport (CCU)', 'Other']"
-                  placeholder="Select Airport"
+                  v-model="store.form.destination"
+                  :items="destinationItems"
+                  placeholder="Select Destination"
                   variant="outlined"
                   density="comfortable"
                   hide-details
@@ -89,328 +237,225 @@
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6">
-                <label class="field-label">Flight Number <span class="text-grey">(optional)</span></label>
-                <v-text-field
-                  v-model="store.form.flightNumber"
-                  placeholder="e.g. AI-302"
+                <label class="field-label">Trip Type</label>
+                <v-select
+                  v-model="store.form.tripType"
+                  :items="tripTypeItems"
+                  placeholder="Select Trip Type"
                   variant="outlined"
                   density="comfortable"
                   hide-details
                   bg-color="white"
                   class="premium-input"
-                  prepend-inner-icon="mdi-airplane-takeoff"
-                ></v-text-field>
+                ></v-select>
+              </v-col>
+            </v-row>
+
+            <v-row dense class="mb-2">
+              <v-col cols="12" sm="6">
+                <label class="field-label">Vehicle Type</label>
+                <v-select
+                  v-model="store.form.vehicleType"
+                  :items="['AC Seater Buses', 'AC Sleeper Buses', 'Traveller / Minivan', 'Car / SUV / Sedan']"
+                  placeholder="Select Vehicle Type"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                ></v-select>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label class="field-label">Vehicle Name</label>
+                <v-select
+                  v-model="store.form.vehicleName"
+                  :items="vehicleNameItems"
+                  placeholder="Select Vehicle Name"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                ></v-select>
               </v-col>
             </v-row>
           </div>
-        </transition>
 
-        <v-row dense class="mb-2">
-          <v-col cols="12" sm="6">
-            <label class="field-label">Destination</label>
-            <v-select
-              v-model="store.form.destination"
-              :items="destinationItems"
-              placeholder="Select Destination"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <label class="field-label">Trip Type</label>
-            <v-select
-              v-model="store.form.tripType"
-              :items="tripTypeItems"
-              placeholder="Select Trip Type"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-            ></v-select>
-          </v-col>
-        </v-row>
-
-        <v-row dense class="mb-2">
-          <v-col cols="12" sm="6">
-            <label class="field-label">Vehicle Type</label>
-            <v-select
-              v-model="store.form.vehicleType"
-              :items="['AC Seater Buses', 'AC Sleeper Buses', 'Traveller / Minivan', 'Car / SUV / Sedan']"
-              placeholder="Select Vehicle Type"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <label class="field-label">Vehicle Name</label>
-            <v-select
-              v-model="store.form.vehicleName"
-              :items="vehicleNameItems"
-              placeholder="Select Vehicle Name"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </div>
-
-      <!-- Section divider -->
-      <div class="section-divider">
-        <div class="divider-line"></div>
-        <v-icon size="20" color="#709C34" class="divider-icon">mdi-chevron-down</v-icon>
-        <div class="divider-line"></div>
-      </div>
-
-      <!-- ═══════════════════════════════════════════════ -->
-      <!-- SECTION 3: Trip Details -->
-      <!-- ═══════════════════════════════════════════════ -->
-      <div class="section-block section-3-bg">
-        <div class="d-flex align-center mb-5">
-          <div class="step-indicator" :class="{ active: store.form.vehicleType || store.form.destination }">
-            <v-icon size="18" color="white">mdi-calendar-clock</v-icon>
+          <!-- Section divider -->
+          <div class="section-divider">
+            <div class="divider-line"></div>
+            <v-icon size="20" color="#709C34" class="divider-icon">mdi-chevron-down</v-icon>
+            <div class="divider-line"></div>
           </div>
-          <div class="ml-3">
-            <h2 class="section-title mb-0">Trip Details</h2>
-            <p class="text-caption text-grey-darken-1 mb-0">When and where are you traveling?</p>
-          </div>
-        </div>
 
-        <v-row dense class="mb-2">
-          <v-col cols="12" sm="4">
-            <label class="field-label">Travel Date</label>
-            <v-text-field
-              v-model="store.form.travelDate"
-              type="date"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-              prepend-inner-icon="mdi-calendar"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="4">
-            <label class="field-label">Travel Time</label>
-            <v-text-field
-              v-model="store.form.travelTime"
-              type="time"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-              prepend-inner-icon="mdi-clock-outline"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="4">
-            <label class="field-label">No. of Passengers</label>
-            <v-text-field
-              v-model="store.form.passengers"
-              type="number"
-              placeholder="e.g. 12"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-              prepend-inner-icon="mdi-account-group"
-              min="1"
-            ></v-text-field>
-          </v-col>
-        </v-row>
+          <!-- SECTION: Trip Details -->
+          <div class="section-block section-3-bg">
+            <div class="d-flex align-center mb-5">
+              <div class="step-indicator" :class="{ active: store.form.vehicleType || store.form.destination }">
+                <v-icon size="18" color="white">mdi-calendar-clock</v-icon>
+              </div>
+              <div class="ml-3">
+                <h2 class="section-title mb-0">Trip Details</h2>
+                <p class="text-caption text-grey-darken-1 mb-0">When and where are you traveling?</p>
+              </div>
+            </div>
 
-        <v-row dense class="mb-2">
-          <v-col cols="12" sm="6">
-            <label class="field-label">Pickup Point</label>
-            <v-text-field
-              v-model="store.form.pickupPoint"
-              placeholder="Enter pickup location"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-              prepend-inner-icon="mdi-map-marker"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <label class="field-label">Drop-off Point</label>
-            <v-text-field
-              v-model="store.form.dropPoint"
-              placeholder="Enter drop-off location"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-              prepend-inner-icon="mdi-map-marker-check"
-            ></v-text-field>
-          </v-col>
-        </v-row>
+            <v-row dense class="mb-2">
+              <v-col cols="12" sm="4">
+                <label class="field-label">Travel Date</label>
+                <v-text-field
+                  v-model="store.form.travelDate"
+                  type="date"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-calendar"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="4">
+                <label class="field-label">Travel Time</label>
+                <v-text-field
+                  v-model="store.form.travelTime"
+                  type="time"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-clock-outline"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="4">
+                <label class="field-label">No. of Passengers</label>
+                <v-text-field
+                  v-model="store.form.passengers"
+                  type="number"
+                  placeholder="e.g. 12"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-account-group"
+                  min="1"
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
-        <!-- Stops -->
-        <div class="stops-container mt-3" v-if="store.form.stops.length > 0">
-          <label class="field-label d-flex align-center">
-            <v-icon size="16" color="#709C34" class="mr-1">mdi-dots-vertical</v-icon>
-            Intermediate Stops
-          </label>
-          <div v-for="(stop, index) in store.form.stops" :key="index" class="stop-row mb-2">
-            <v-text-field
-              v-model="store.form.stops[index]"
-              :placeholder="`Stop ${index + 1}`"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-              prepend-inner-icon="mdi-circle-small"
-            >
-              <template v-slot:append-inner>
-                <v-btn
-                  icon
-                  variant="text"
-                  size="x-small"
-                  color="error"
-                  @click="store.removeStop(index)"
-                  class="stop-remove-btn"
+            <v-row dense class="mb-2">
+              <v-col cols="12" sm="6">
+                <label class="field-label">Pickup Point</label>
+                <v-text-field
+                  v-model="store.form.pickupPoint"
+                  placeholder="Enter pickup location"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-map-marker"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label class="field-label">Drop-off Point</label>
+                <v-text-field
+                  v-model="store.form.dropPoint"
+                  placeholder="Enter drop-off location"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-map-marker-check"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!-- Stops -->
+            <div class="stops-container mt-3" v-if="store.form.stops.length > 0">
+              <label class="field-label d-flex align-center">
+                <v-icon size="16" color="#709C34" class="mr-1">mdi-dots-vertical</v-icon>
+                Intermediate Stops
+              </label>
+              <div v-for="(stop, index) in store.form.stops" :key="index" class="stop-row mb-2">
+                <v-text-field
+                  v-model="store.form.stops[index]"
+                  :placeholder="`Stop ${index + 1}`"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-circle-small"
                 >
-                  <v-icon size="18">mdi-close-circle</v-icon>
-                </v-btn>
-              </template>
-            </v-text-field>
+                  <template v-slot:append-inner>
+                    <v-btn
+                      icon
+                      variant="text"
+                      size="x-small"
+                      color="error"
+                      @click="store.removeStop(index)"
+                      class="stop-remove-btn"
+                    >
+                      <v-icon size="18">mdi-close-circle</v-icon>
+                    </v-btn>
+                  </template>
+                </v-text-field>
+              </div>
+            </div>
+
+            <div class="text-right mt-2">
+              <v-btn
+                variant="tonal"
+                color="#709C34"
+                size="small"
+                @click="store.addStop"
+                class="rounded-lg text-capitalize font-weight-medium"
+                prepend-icon="mdi-plus"
+              >
+                Add Stop
+              </v-btn>
+            </div>
+          </div>
+
+          <!-- Submit Section with Back + Submit -->
+          <div class="submit-section">
+            <div class="d-flex ga-3">
+              <v-btn
+                variant="outlined"
+                color="#709C34"
+                size="x-large"
+                class="back-btn font-weight-bold rounded-xl elevation-0"
+                @click="goToStep1"
+                style="flex: 0 0 auto; min-width: 140px;"
+              >
+                <v-icon left class="mr-2">mdi-arrow-left</v-icon>
+                BACK
+              </v-btn>
+              <v-btn
+                color="#709C34"
+                size="x-large"
+                type="submit"
+                class="submit-btn font-weight-bold text-white rounded-xl elevation-0"
+                :loading="submitting"
+                style="flex: 1;"
+              >
+                <v-icon left class="mr-2">mdi-send</v-icon>
+                SEND ENQUIRY
+                <v-icon right class="ml-2">mdi-arrow-right</v-icon>
+              </v-btn>
+            </div>
+            <div class="d-flex align-center justify-center mt-4">
+              <v-icon size="14" color="grey" class="mr-1">mdi-shield-check</v-icon>
+              <p class="text-caption text-grey mb-0">
+                Your information is secure. After submitting, Ant Travels will call you with a quotation.
+              </p>
+            </div>
           </div>
         </div>
-
-        <div class="text-right mt-2">
-          <v-btn
-            variant="tonal"
-            color="#709C34"
-            size="small"
-            @click="store.addStop"
-            class="rounded-lg text-capitalize font-weight-medium"
-            prepend-icon="mdi-plus"
-          >
-            Add Stop
-          </v-btn>
-        </div>
-      </div>
-
-      <!-- Section divider -->
-      <div class="section-divider">
-        <div class="divider-line"></div>
-        <v-icon size="20" color="#709C34" class="divider-icon">mdi-chevron-down</v-icon>
-        <div class="divider-line"></div>
-      </div>
-
-      <!-- ═══════════════════════════════════════════════ -->
-      <!-- SECTION 4: Customer Information -->
-      <!-- ═══════════════════════════════════════════════ -->
-      <div class="section-block">
-        <div class="d-flex align-center mb-5">
-          <div class="step-indicator" :class="{ active: store.form.pickupPoint || store.form.travelDate }">
-            <v-icon size="18" color="white">mdi-account-circle</v-icon>
-          </div>
-          <div class="ml-3">
-            <h2 class="section-title mb-0">Your Information</h2>
-            <p class="text-caption text-grey-darken-1 mb-0">How can we reach you?</p>
-          </div>
-        </div>
-
-        <v-row dense class="mb-2">
-          <v-col cols="12" sm="6">
-            <label class="field-label">Full Name</label>
-            <v-text-field
-              v-model="store.form.fullName"
-              placeholder="Your Name"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-              prepend-inner-icon="mdi-account-outline"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <label class="field-label">Phone Number</label>
-            <v-text-field
-              v-model="store.form.phone"
-              placeholder="+91 1234567897"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-              prepend-inner-icon="mdi-phone-outline"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-
-        <v-row dense class="mb-2">
-          <v-col cols="12">
-            <label class="field-label">Email Address</label>
-            <v-text-field
-              v-model="store.form.email"
-              placeholder="you@company.com"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-              prepend-inner-icon="mdi-email-outline"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-
-        <v-row dense>
-          <v-col cols="12">
-            <label class="field-label d-flex align-center">
-              <v-icon size="14" color="#709C34" class="mr-1">mdi-note-text-outline</v-icon>
-              Additional Notes
-            </label>
-            <v-textarea
-              v-model="store.form.notes"
-              placeholder="Any special requests, luggage details, accessibility needs..."
-              variant="outlined"
-              rows="3"
-              hide-details
-              bg-color="white"
-              class="premium-input"
-            ></v-textarea>
-          </v-col>
-        </v-row>
-      </div>
-
-      <!-- Submit Button -->
-      <div class="submit-section">
-        <v-btn
-          color="#709C34"
-          size="x-large"
-          type="submit"
-          block
-          class="submit-btn font-weight-bold text-white rounded-xl elevation-0"
-          :loading="submitting"
-        >
-          <v-icon left class="mr-2">mdi-send</v-icon>
-          SEND ENQUIRY
-          <v-icon right class="ml-2">mdi-arrow-right</v-icon>
-        </v-btn>
-        <div class="d-flex align-center justify-center mt-4">
-          <v-icon size="14" color="grey" class="mr-1">mdi-shield-check</v-icon>
-          <p class="text-caption text-grey mb-0">
-            Your information is secure. After submitting, Ant Travels will call you with a quotation.
-          </p>
-        </div>
-      </div>
+      </transition>
     </v-form>
 
     <!-- Success Overlay -->
@@ -435,6 +480,18 @@ import { useEnquiryStore } from '../store/enquiryStore'
 const store = useEnquiryStore()
 const submitting = ref(false)
 const showSuccess = ref(false)
+const currentStep = ref(1)
+const transitionName = ref('step-slide-left')
+
+const goToStep2 = () => {
+  transitionName.value = 'step-slide-left'
+  currentStep.value = 2
+}
+
+const goToStep1 = () => {
+  transitionName.value = 'step-slide-right'
+  currentStep.value = 1
+}
 
 const serviceTypes = [
   { value: 'local', label: 'Local & Outstation', icon: 'mdi-map-marker-distance', desc: 'City travel or intercity trips' },
@@ -504,6 +561,7 @@ const submitForm = async () => {
     setTimeout(() => {
       showSuccess.value = false
       store.resetForm()
+      currentStep.value = 1
     }, 2500)
   } else {
     alert('Failed to submit enquiry. Please try again.')
@@ -520,21 +578,80 @@ const submitForm = async () => {
   position: relative;
 }
 
-/* ── Progress Bar ────────────────────────── */
-.progress-bar-wrapper {
-  padding: 24px 32px 0;
+/* ── Step Header ────────────────────────── */
+.step-header {
+  padding: 28px 32px 12px;
+  background: linear-gradient(135deg, #fafcf7 0%, #f0f4e8 100%);
+  border-bottom: 1px solid #E8ECE3;
 }
-.progress-bar-track {
-  height: 6px;
+.step-pills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.step-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  border-radius: 50px;
   background: #ECEFF1;
-  border-radius: 20px;
-  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.progress-bar-fill {
-  height: 100%;
+.step-pill.active {
+  background: linear-gradient(135deg, #709C34, #8BBF45);
+  box-shadow: 0 4px 16px rgba(112, 156, 52, 0.35);
+}
+.step-pill.completed {
+  background: #E8F5E9;
+  cursor: pointer;
+}
+.pill-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: #546E7A;
+  transition: all 0.3s ease;
+}
+.step-pill.active .pill-number {
+  background: rgba(255,255,255,0.3);
+  color: white;
+}
+.step-pill.completed .pill-number {
+  background: #709C34;
+  color: white;
+}
+.pill-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #78909C;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.step-pill.active .pill-label {
+  color: white;
+}
+.step-pill.completed .pill-label {
+  color: #709C34;
+}
+.step-connector {
+  width: 48px;
+  height: 3px;
+  background: #CFD8DC;
+  border-radius: 4px;
+  margin: 0 4px;
+  transition: background 0.4s ease;
+}
+.step-connector.active {
   background: linear-gradient(90deg, #709C34, #A4D65E);
-  border-radius: 20px;
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── Sections ────────────────────────── */
@@ -743,6 +860,17 @@ const submitForm = async () => {
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(112, 156, 52, 0.4) !important;
 }
+.back-btn {
+  height: 56px !important;
+  font-size: 16px !important;
+  letter-spacing: 1px;
+  border-width: 2px;
+  transition: all 0.3s ease;
+}
+.back-btn:hover {
+  background: rgba(112, 156, 52, 0.06) !important;
+  transform: translateY(-2px);
+}
 
 /* ── Success Overlay ────────────────────────── */
 .success-overlay {
@@ -770,7 +898,31 @@ const submitForm = async () => {
   animation: pop-in 0.4s ease;
 }
 
-/* ── Transitions ────────────────────────── */
+/* ── Step Slide Transitions ────────────────────────── */
+.step-slide-left-enter-active,
+.step-slide-left-leave-active,
+.step-slide-right-enter-active,
+.step-slide-right-leave-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.step-slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(40px);
+}
+.step-slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+.step-slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+.step-slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+/* ── Inner Transitions ────────────────────────── */
 .slide-fade-enter-active {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -808,8 +960,8 @@ const submitForm = async () => {
   .section-block {
     padding: 20px 16px;
   }
-  .progress-bar-wrapper {
-    padding: 16px 16px 0;
+  .step-header {
+    padding: 20px 16px 8px;
   }
   .submit-section {
     padding: 16px 16px 24px;
@@ -819,6 +971,22 @@ const submitForm = async () => {
   }
   .service-card {
     padding: 14px 12px;
+  }
+  .step-pill {
+    padding: 8px 14px;
+    gap: 6px;
+  }
+  .pill-label {
+    font-size: 11px;
+  }
+  .step-connector {
+    width: 24px;
+  }
+  .d-flex.ga-3 {
+    flex-direction: column;
+  }
+  .back-btn {
+    min-width: 100% !important;
   }
 }
 </style>
