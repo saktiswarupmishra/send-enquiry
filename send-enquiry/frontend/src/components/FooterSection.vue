@@ -57,57 +57,8 @@
 
     <!-- Skyline Graphic -->
     <div class="skyline-container">
-      <div class="skyline-bg">
-        <svg viewBox="0 0 1440 200" preserveAspectRatio="none" class="skyline-svg">
-          <!-- Background layer - lighter grey buildings -->
-          <rect x="0" y="80" width="60" height="120" fill="#9E9E9E" opacity="0.5"/>
-          <rect x="55" y="60" width="40" height="140" fill="#9E9E9E" opacity="0.4"/>
-          <rect x="90" y="90" width="50" height="110" fill="#9E9E9E" opacity="0.5"/>
-          <!-- Dome / Mosque -->
-          <ellipse cx="200" cy="70" rx="40" ry="30" fill="#9E9E9E" opacity="0.6"/>
-          <rect x="170" y="70" width="60" height="130" fill="#9E9E9E" opacity="0.5"/>
-          <rect x="195" y="30" width="10" height="40" fill="#9E9E9E" opacity="0.6"/>
-          <!-- Taj Mahal style -->
-          <ellipse cx="350" cy="50" rx="35" ry="30" fill="#BDBDBD" opacity="0.6"/>
-          <rect x="320" y="50" width="60" height="150" fill="#BDBDBD" opacity="0.5"/>
-          <rect x="305" y="80" width="10" height="120" fill="#BDBDBD" opacity="0.4"/>
-          <rect x="375" y="80" width="10" height="120" fill="#BDBDBD" opacity="0.4"/>
-          <rect x="345" y="15" width="10" height="35" fill="#BDBDBD" opacity="0.6"/>
-          <!-- Palm tree -->
-          <rect x="420" y="100" width="6" height="100" fill="#9E9E9E" opacity="0.5"/>
-          <ellipse cx="423" cy="95" rx="20" ry="12" fill="#9E9E9E" opacity="0.4"/>
-          <!-- Buildings cluster -->
-          <rect x="480" y="70" width="35" height="130" fill="#9E9E9E" opacity="0.5"/>
-          <rect x="510" y="50" width="30" height="150" fill="#BDBDBD" opacity="0.4"/>
-          <rect x="535" y="80" width="40" height="120" fill="#9E9E9E" opacity="0.5"/>
-          <!-- Qutub Minar style -->
-          <polygon points="620,30 630,30 635,200 615,200" fill="#BDBDBD" opacity="0.5"/>
-          <!-- Gate structure -->
-          <rect x="680" y="60" width="80" height="140" fill="#9E9E9E" opacity="0.5"/>
-          <ellipse cx="720" cy="60" rx="40" ry="25" fill="#9E9E9E" opacity="0.6"/>
-          <!-- Modern buildings -->
-          <rect x="800" y="40" width="30" height="160" fill="#BDBDBD" opacity="0.4"/>
-          <rect x="825" y="70" width="40" height="130" fill="#9E9E9E" opacity="0.5"/>
-          <rect x="860" y="55" width="25" height="145" fill="#BDBDBD" opacity="0.4"/>
-          <!-- Temple style -->
-          <polygon points="940,50 960,20 980,50" fill="#9E9E9E" opacity="0.5"/>
-          <rect x="940" y="50" width="40" height="150" fill="#9E9E9E" opacity="0.5"/>
-          <!-- More buildings -->
-          <rect x="1020" y="60" width="45" height="140" fill="#BDBDBD" opacity="0.4"/>
-          <rect x="1060" y="80" width="35" height="120" fill="#9E9E9E" opacity="0.5"/>
-          <!-- Dome -->
-          <ellipse cx="1150" cy="55" rx="30" ry="25" fill="#BDBDBD" opacity="0.5"/>
-          <rect x="1125" y="55" width="50" height="145" fill="#BDBDBD" opacity="0.4"/>
-          <!-- Palm tree -->
-          <rect x="1210" y="90" width="6" height="110" fill="#9E9E9E" opacity="0.4"/>
-          <ellipse cx="1213" cy="85" rx="18" ry="10" fill="#9E9E9E" opacity="0.4"/>
-          <!-- Right side buildings -->
-          <rect x="1260" y="50" width="40" height="150" fill="#BDBDBD" opacity="0.5"/>
-          <rect x="1295" y="70" width="50" height="130" fill="#9E9E9E" opacity="0.4"/>
-          <ellipse cx="1370" cy="60" rx="35" ry="28" fill="#9E9E9E" opacity="0.5"/>
-          <rect x="1340" y="60" width="60" height="140" fill="#9E9E9E" opacity="0.4"/>
-          <rect x="1400" y="80" width="40" height="120" fill="#BDBDBD" opacity="0.4"/>
-        </svg>
+      <div class="skyline text-center">
+        <v-img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Delhi_Skyline.svg" height="150" contain class="mb-n2 skyline-img"></v-img>
       </div>
     </div>
 
@@ -265,14 +216,8 @@ const corporateLinks = ref([
   width: 100%;
   background-color: #555555;
 }
-.skyline-bg {
-  width: 100%;
-  line-height: 0;
-}
-.skyline-svg {
-  width: 100%;
-  height: 150px;
-  display: block;
+.skyline-img {
+  opacity: 0.4;
 }
 
 /* Dark Footer */
