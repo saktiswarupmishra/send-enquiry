@@ -55,10 +55,7 @@
       </v-row>
     </v-container>
 
-    <!-- Skyline Graphic -->
-    <div class="skyline-container">
-      <div class="skyline-bg"></div>
-    </div>
+
 
     <!-- Dark Footer -->
     <div class="footer-dark">
@@ -69,9 +66,19 @@
             <div class="ant-logo mb-4">
               <div class="ant-logo-text">ANT</div>
               <div class="ant-logo-subtitle">
-                <span class="logo-line"></span>
+                <div class="logo-lines-group">
+                  <span class="logo-line-thin"></span>
+                  <span class="logo-line-thin"></span>
+                  <span class="logo-line-thin"></span>
+                  <span class="logo-line-thin"></span>
+                </div>
                 <span class="logo-tourist">TOURIST</span>
-                <span class="logo-line"></span>
+                <div class="logo-lines-group">
+                  <span class="logo-line-thin"></span>
+                  <span class="logo-line-thin"></span>
+                  <span class="logo-line-thin"></span>
+                  <span class="logo-line-thin"></span>
+                </div>
               </div>
             </div>
             <p class="text-body-2 text-grey-lighten-1 mb-6" style="line-height: 1.7; font-size: 13px !important;">
@@ -145,7 +152,7 @@
           </v-col>
         </v-row>
 
-        <v-divider color="grey-darken-2" class="mb-4"></v-divider>
+        <v-divider color="white" class="mb-4" style="opacity: 1; border-color: #fff;"></v-divider>
 
         <div class="d-flex flex-column flex-md-row justify-space-between align-center px-2 footer-bottom">
           <p class="text-caption text-grey-lighten-1 mb-2 mb-md-0 footer-copyright">© 2026 ANT TRAVEL PRIVATE LTD. ALL RIGHTS RESERVED.</p>
@@ -216,29 +223,15 @@ const corporateLinks = ref([
   font-size: 15px !important;
 }
 
-/* Skyline */
-.skyline-container {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  background-color: transparent;
-  margin-bottom: -2px;
-}
-.skyline-bg {
-  width: 100%;
-  height: 120px;
-  background-image: url('/taj-mahal-skyline.png');
-  background-size: contain;
-  background-repeat: repeat-x;
-  background-position: bottom center;
-}
+
 
 /* Dark Footer */
 .footer-dark {
-  background-color: #424242;
+  background-color: #4b4b4b;
   padding-top: 48px;
   padding-bottom: 24px;
   color: #fff;
+  border-top: 1px solid #fff;
 }
 
 /* ANT Logo */
@@ -246,43 +239,50 @@ const corporateLinks = ref([
   display: inline-block;
 }
 .ant-logo-text {
-  font-size: 42px;
+  font-size: 64px;
   font-weight: 900;
-  line-height: 1;
-  letter-spacing: 3px;
+  line-height: 0.8;
+  letter-spacing: 2px;
   color: #fff;
-  border: 2px solid #fff;
-  padding: 4px 12px 0;
+  padding: 0;
 }
 .ant-logo-subtitle {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 2px;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
 }
-.logo-line {
+.logo-lines-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   flex: 1;
-  height: 2px;
+}
+.logo-line-thin {
+  width: 100%;
+  height: 1px;
   background-color: #fff;
 }
 .logo-tourist {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
   color: #fff;
   white-space: nowrap;
 }
 
 /* Social Icons */
 .social-icons .social-icon {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: opacity 0.3s;
   text-decoration: none;
+  border: 1px solid #fff;
 }
 .social-icon.instagram {
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
