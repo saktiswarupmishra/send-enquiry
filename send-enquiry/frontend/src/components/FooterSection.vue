@@ -57,7 +57,7 @@
 
     <!-- Skyline Graphic -->
     <div class="skyline-container">
-      <v-img src="/skyline.png" class="skyline-img" cover></v-img>
+      <div class="skyline-bg"></div>
     </div>
 
     <!-- Dark Footer -->
@@ -221,13 +221,16 @@ const corporateLinks = ref([
   overflow: hidden;
   position: relative;
   width: 100%;
-  background-color: #555555;
+  background-color: transparent;
   margin-bottom: -2px;
 }
-.skyline-img {
+.skyline-bg {
   width: 100%;
   height: 120px;
-  display: block;
+  background-image: url('/taj-mahal-skyline.png');
+  background-size: contain;
+  background-repeat: repeat-x;
+  background-position: bottom center;
 }
 
 /* Dark Footer */
