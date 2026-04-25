@@ -26,7 +26,7 @@
           </v-btn>
           <ul class="list-unstyled custom-list pl-2">
             <li v-for="link in hillStationLinks" :key="link">
-               <span class="dot mr-2"></span> {{ link }}
+              <span class="dot mr-2"></span> {{ link }}
             </li>
           </ul>
         </v-col>
