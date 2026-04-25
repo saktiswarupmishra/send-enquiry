@@ -19,7 +19,7 @@
           </v-img>
           
           <v-card-text class="pa-4 flex-grow-1 d-flex flex-column">
-            <h3 class="text-subtitle-2 font-weight-bold text-grey-darken-4 mb-2" style="font-size: 15px !important;">21 Sleeper (2+1) AC Deluxe Coach</h3>
+            <h3 class="text-subtitle-2 font-weight-bold text-grey-darken-4 mb-2" style="font-size: 15px !important;">21 Sleeper (2+1) AC Deluxe(TATA)</h3>
             
             <div class="d-flex flex-wrap mb-3" style="gap: 4px;">
               <v-chip size="x-small" variant="outlined" color="grey-darken-1" class="font-weight-medium bg-grey-lighten-4">
