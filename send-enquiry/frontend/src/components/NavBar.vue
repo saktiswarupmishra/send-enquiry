@@ -55,7 +55,7 @@
         <!-- Traveller Hire Dropdown -->
         <v-menu open-on-hover transition="slide-y-transition" :close-delay="100">
           <template v-slot:activator="{ props }">
-            <v-btn variant="text" v-bind="props" class="nav-btn" append-icon="mdi-chevron-down">Traveller Hire</v-btn>
+            <v-btn variant="text" v-bind="props" class="nav-btn" append-icon="mdi-chevron-down">Minivan Hire</v-btn>
           </template>
           <v-list class="dropdown-list py-2" bg-color="white" elevation="4">
             <v-list-item v-for="(item, index) in travellerHireOptions" :key="index" link class="dropdown-item px-4 py-2">
@@ -65,9 +65,9 @@
         </v-menu>
 
 
-        <v-btn variant="text" to="/payment" class="nav-btn">Help</v-btn>
+        <v-btn variant="text" to="/payment" class="nav-btn">Help Support</v-btn>
         <v-btn variant="text" to="/send-enquiry" :active="false" class="nav-btn">Manage Booking</v-btn>
-        <v-btn variant="flat" color="primary" to="/contact" class="nav-btn ml-2 px-6 rounded-pill text-white fw-bold">Contact Us</v-btn>
+        <v-btn variant="flat" color="primary" to="/contact" class="nav-btn ml-2 px-6 rounded-pill text-white fw-bold">Book Now</v-btn>
       </div>
 
       <!-- Mobile Menu Toggle -->
