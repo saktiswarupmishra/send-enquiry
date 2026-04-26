@@ -10,7 +10,7 @@
           @click="goToStep(1)"
         >
           <div class="pill-number">
-            <v-icon v-if="currentStep > 1" size="16" color="white">mdi-check</v-icon>
+            <v-icon v-if="currentStep > 1" size="14" color="white">mdi-check</v-icon>
             <span v-else>1</span>
           </div>
           <span class="pill-label">Your Info</span>
@@ -22,7 +22,7 @@
           @click="currentStep > 1 ? goToStep(2) : null"
         >
           <div class="pill-number">
-            <v-icon v-if="currentStep > 2" size="16" color="white">mdi-check</v-icon>
+            <v-icon v-if="currentStep > 2" size="14" color="white">mdi-check</v-icon>
             <span v-else>2</span>
           </div>
           <span class="pill-label">Service</span>
@@ -229,6 +229,162 @@
                       bg-color="white"
                       class="premium-input"
                       prepend-inner-icon="mdi-airplane-takeoff"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </div>
+            </transition>
+
+            <!-- Wedding-specific fields -->
+            <transition name="slide-fade">
+              <div v-if="store.form.serviceType === 'wedding'" class="mb-5">
+                <div class="d-flex align-center mb-3">
+                  <v-icon color="#E53935" size="20" class="mr-2">mdi-heart-outline</v-icon>
+                  <span class="font-weight-bold text-red-darken-3 text-body-2">Wedding Transport Details</span>
+                </div>
+                <v-row dense>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">Event Venue(s)</label>
+                    <v-text-field
+                      v-model="store.form.eventVenue"
+                      placeholder="e.g. The Grand Palace"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                      prepend-inner-icon="mdi-map-marker-star"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">Vehicles Needed</label>
+                    <v-text-field
+                      v-model="store.form.vehiclesNeeded"
+                      type="number"
+                      placeholder="e.g. 3"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                      prepend-inner-icon="mdi-bus-multiple"
+                      min="1"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </div>
+            </transition>
+
+            <!-- Group Tours fields -->
+            <transition name="slide-fade">
+              <div v-if="store.form.serviceType === 'group'" class="mb-5">
+                <div class="d-flex align-center mb-3">
+                  <v-icon color="#FF8F00" size="20" class="mr-2">mdi-account-group</v-icon>
+                  <span class="font-weight-bold text-orange-darken-3 text-body-2">Group Tour Details</span>
+                </div>
+                <v-row dense>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">Tour Destination</label>
+                    <v-text-field
+                      v-model="store.form.tourDestination"
+                      placeholder="e.g. Golden Triangle Tour"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                      prepend-inner-icon="mdi-map-marker-path"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">Duration (Days)</label>
+                    <v-text-field
+                      v-model="store.form.tourDurationDays"
+                      type="number"
+                      placeholder="e.g. 5"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                      prepend-inner-icon="mdi-calendar-range"
+                      min="1"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </div>
+            </transition>
+
+            <!-- Corporate fields -->
+            <transition name="slide-fade">
+              <div v-if="store.form.serviceType === 'corporate'" class="mb-5">
+                <div class="d-flex align-center mb-3">
+                  <v-icon color="#455A64" size="20" class="mr-2">mdi-briefcase-outline</v-icon>
+                  <span class="font-weight-bold text-blue-grey-darken-3 text-body-2">Corporate Travel Details</span>
+                </div>
+                <v-row dense>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">Company Name</label>
+                    <v-text-field
+                      v-model="store.form.companyName"
+                      placeholder="e.g. Acme Corp"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                      prepend-inner-icon="mdi-domain"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">Event/Purpose</label>
+                    <v-text-field
+                      v-model="store.form.eventPurpose"
+                      placeholder="e.g. Annual Offsite, Daily Commute"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                      prepend-inner-icon="mdi-notebook-outline"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </div>
+            </transition>
+
+            <!-- School fields -->
+            <transition name="slide-fade">
+              <div v-if="store.form.serviceType === 'school'" class="mb-5">
+                <div class="d-flex align-center mb-3">
+                  <v-icon color="#00838F" size="20" class="mr-2">mdi-bus-school</v-icon>
+                  <span class="font-weight-bold text-cyan-darken-3 text-body-2">School Trip Details</span>
+                </div>
+                <v-row dense>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">School Name</label>
+                    <v-text-field
+                      v-model="store.form.schoolName"
+                      placeholder="e.g. Delhi Public School"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                      prepend-inner-icon="mdi-school-outline"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <label class="field-label">Grade / Class</label>
+                    <v-text-field
+                      v-model="store.form.gradeClass"
+                      placeholder="e.g. Class 10"
+                      variant="outlined"
+                      density="comfortable"
+                      hide-details
+                      bg-color="white"
+                      class="premium-input"
+                      prepend-inner-icon="mdi-account-group-outline"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -547,6 +703,10 @@ const destinationItems = computed(() => {
   if (store.form.serviceType === 'airport') return ['Airport Pickup', 'Airport Drop-off', 'Airport Round Trip']
   if (store.form.serviceType === 'local') return ['Local City Travel']
   if (store.form.serviceType === 'outstation') return ['Outstation']
+  if (store.form.serviceType === 'wedding') return ['Wedding Venue', 'Pre-Wedding shoot', 'Guest Transfer']
+  if (store.form.serviceType === 'group') return ['Sightseeing', 'Pilgrimage', 'Holiday Package']
+  if (store.form.serviceType === 'corporate') return ['Office Commute', 'Corporate Offsite', 'Conference/Event']
+  if (store.form.serviceType === 'school') return ['Picnic/Excursion', 'Educational Tour', 'Daily Transport']
   
   return ['Local City Travel', 'Outstation']
 })
@@ -555,6 +715,11 @@ const tripTypeItems = computed(() => {
   if (store.form.serviceType === 'airport' || store.form.serviceType === 'outstation') {
     return ['One Way', 'Round Trip', 'Multi-City']
   }
+  if (store.form.serviceType === 'wedding') return ['Half Day', 'Full Day', 'Multi-Day']
+  if (store.form.serviceType === 'group') return ['Multi-Day Tour', 'Weekend Trip']
+  if (store.form.serviceType === 'corporate') return ['One Way', 'Round Trip', 'Monthly Contract']
+  if (store.form.serviceType === 'school') return ['Same Day Return', 'Multi-Day Camp']
+
   return ['4hrs/40km', '8hrs/80km', '12hrs/120km', '16hrs/160km', '24hrs/200km']
 })
 
@@ -638,8 +803,8 @@ const submitForm = async () => {
 .step-pill {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 24px;
+  gap: 8px;
+  padding: 8px 20px;
   border-radius: 50px;
   background: #ECEFF1;
   cursor: pointer;
@@ -654,14 +819,14 @@ const submitForm = async () => {
   cursor: pointer;
 }
 .pill-number {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: rgba(255,255,255,0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 800;
   color: #546E7A;
   transition: all 0.3s ease;

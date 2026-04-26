@@ -20,7 +20,16 @@ export const useEnquiryStore = defineStore('enquiry', () => {
     fullName: '',
     phone: '',
     email: '',
-    notes: ''
+    notes: '',
+    // Custom Service Fields
+    eventVenue: '',
+    vehiclesNeeded: '',
+    tourDestination: '',
+    tourDurationDays: '',
+    companyName: '',
+    eventPurpose: '',
+    schoolName: '',
+    gradeClass: ''
   })
 
   const addStop = () => {
@@ -49,7 +58,15 @@ export const useEnquiryStore = defineStore('enquiry', () => {
       fullName: '',
       phone: '',
       email: '',
-      notes: ''
+      notes: '',
+      eventVenue: '',
+      vehiclesNeeded: '',
+      tourDestination: '',
+      tourDurationDays: '',
+      companyName: '',
+      eventPurpose: '',
+      schoolName: '',
+      gradeClass: ''
     }
   }
 
