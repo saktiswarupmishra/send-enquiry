@@ -69,7 +69,36 @@
 
         <v-btn variant="text" to="/payment" class="nav-btn" prepend-icon="mdi-headset">Help Support</v-btn>
         <v-btn variant="text" to="/send-enquiry" :active="false" class="nav-btn" prepend-icon="mdi-calendar-check-outline">Manage Booking</v-btn>
-        <v-btn variant="flat" color="primary" to="/contact" class="nav-btn ml-2 px-6 rounded-pill text-white fw-bold" prepend-icon="mdi-bookmark-check">Book Now</v-btn>
+        
+        <!-- Book Now Dropdown -->
+        <v-menu open-on-hover transition="slide-y-transition" :close-delay="100">
+          <template v-slot:activator="{ props }">
+            <v-btn 
+              variant="flat" 
+              color="primary" 
+              v-bind="props"
+              class="nav-btn ml-2 px-6 rounded-pill text-white fw-bold" 
+              prepend-icon="mdi-bookmark-check"
+              append-icon="mdi-chevron-down"
+            >
+              Book Now
+            </v-btn>
+          </template>
+          <v-list class="dropdown-list py-2" bg-color="white" elevation="4">
+            <v-list-item 
+              v-for="(service, index) in serviceTypes" 
+              :key="index" 
+              @click="navigateToService(service.value)"
+              link 
+              class="dropdown-item px-4 py-2"
+            >
+              <template v-slot:prepend>
+                <v-icon size="20" color="primary" class="mr-3">{{ service.icon }}</v-icon>
+              </template>
+              <v-list-item-title class="dropdown-title">{{ service.label }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </div>
 
       <!-- Mobile Menu Toggle -->
@@ -137,14 +166,29 @@
 
       <v-list-item to="/payment" prepend-icon="mdi-headset" title="Help Support" class="mb-1"></v-list-item>
       <v-list-item to="/send-enquiry" :active="false" prepend-icon="mdi-calendar-check-outline" title="Manage Booking" class="mb-1"></v-list-item>
-      <v-list-item to="/contact" prepend-icon="mdi-bookmark-check" title="Book Now" class="mb-1"></v-list-item>
+      
+      <v-list-group value="Book Now">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props" prepend-icon="mdi-bookmark-check" title="Book Now" class="mb-1"></v-list-item>
+        </template>
+        <v-list-item 
+          v-for="(service, i) in serviceTypes" 
+          :key="i" 
+          :title="service.label" 
+          :prepend-icon="service.icon"
+          class="pl-12"
+          @click="navigateToService(service.value)"
+        ></v-list-item>
+      </v-list-group>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const drawer = ref(false)
 
 const busHireOptions = [
@@ -174,6 +218,24 @@ const travellerHireOptions = [
   'Delhi To Jim Corbett',
   'Delhi Sightseeing'
 ]
+
+const serviceTypes = [
+  { value: 'local', label: 'Local Trip', icon: 'mdi-city' },
+  { value: 'outstation', label: 'Outstation', icon: 'mdi-map-marker-distance' },
+  { value: 'wedding', label: 'Wedding', icon: 'mdi-heart-outline' },
+  { value: 'group', label: 'Group Tours', icon: 'mdi-account-group' },
+  { value: 'airport', label: 'Airport', icon: 'mdi-airplane' },
+  { value: 'corporate', label: 'Corporate', icon: 'mdi-briefcase-outline' },
+  { value: 'school', label: 'School', icon: 'mdi-bus-school' }
+]
+
+const navigateToService = (serviceValue) => {
+  drawer.value = false
+  router.push({
+    path: '/send-enquiry',
+    query: { service: serviceValue }
+  })
+}
 </script>
 
 <style scoped>

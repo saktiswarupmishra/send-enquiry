@@ -353,8 +353,10 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useEnquiryStore } from '../store/enquiryStore'
 
+const route = useRoute()
 const store = useEnquiryStore()
 const submitting = ref(false)
 const showSuccess = ref(false)
@@ -465,6 +467,19 @@ const progressPercent = computed(() => {
 onMounted(() => {
   if (store.form.stops.length === 0) {
     store.addStop()
+  }
+  
+  // Handle service pre-selection from query params
+  if (route.query.service) {
+    store.form.serviceType = route.query.service
+  }
+})
+
+// Watch for route query changes to update service type
+watch(() => route.query.service, (newService) => {
+  if (newService) {
+    store.form.serviceType = newService
+    currentStep.value = 1 // Reset to step 1 to show service details
   }
 })
 
