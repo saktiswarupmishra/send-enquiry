@@ -199,10 +199,6 @@
             </div>
           </div>
 
-          <!-- Section divider + Vehicle Details (revealed on service select) -->
-          <transition name="vehicle-reveal">
-          <div v-if="store.form.serviceType" key="vehicle-details-wrapper">
-
           <!-- Section divider -->
           <div class="section-divider">
             <div class="divider-line"></div>
@@ -498,9 +494,6 @@
               </v-col>
             </v-row>
           </div>
-
-          </div>
-          </transition>
 
           <!-- Next Button -->
           <div class="submit-section">
