@@ -25,13 +25,14 @@
 
       <!-- Desktop Navigation Links -->
       <div class="d-none d-lg-flex align-center navigation-links">
-        <v-btn variant="text" to="/" class="nav-btn">Home</v-btn>
-        <v-btn variant="text" href="https://www.ebookmyseat.in/" target="_blank" class="nav-btn text-grey-darken-3">Bus Ticket</v-btn>
+        <v-btn icon to="/" title="Home" class="nav-btn mr-2" variant="text">
+          <v-icon size="28" color="primary" class="moving-bus-icon">mdi-bus-side</v-icon>
+        </v-btn>
 
         <!-- Bus Hire Dropdown -->
         <v-menu open-on-hover transition="slide-y-transition" :close-delay="100">
           <template v-slot:activator="{ props }">
-            <v-btn variant="text" v-bind="props" class="nav-btn" append-icon="mdi-chevron-down">Bus Hire</v-btn>
+            <v-btn variant="text" v-bind="props" class="nav-btn" prepend-icon="mdi-bus" append-icon="mdi-chevron-down">Bus Hire</v-btn>
           </template>
           <v-list class="dropdown-list py-2" bg-color="white" elevation="4">
             <v-list-item v-for="(item, index) in busHireOptions" :key="index" link class="dropdown-item px-4 py-2">
@@ -40,10 +41,12 @@
           </v-list>
         </v-menu>
 
+        <v-btn variant="text" href="https://www.ebookmyseat.in/" target="_blank" class="nav-btn text-grey-darken-3" prepend-icon="mdi-ticket-outline">Bus Ticket</v-btn>
+
         <!-- Car Hire Dropdown -->
         <v-menu open-on-hover transition="slide-y-transition" :close-delay="100">
           <template v-slot:activator="{ props }">
-            <v-btn variant="text" v-bind="props" class="nav-btn" append-icon="mdi-chevron-down">Car Hire</v-btn>
+            <v-btn variant="text" v-bind="props" class="nav-btn" prepend-icon="mdi-car-outline" append-icon="mdi-chevron-down">Car Hire</v-btn>
           </template>
           <v-list class="dropdown-list py-2" bg-color="white" elevation="4">
             <v-list-item v-for="(item, index) in carHireOptions" :key="index" link class="dropdown-item px-4 py-2">
@@ -55,7 +58,7 @@
         <!-- Traveller Hire Dropdown -->
         <v-menu open-on-hover transition="slide-y-transition" :close-delay="100">
           <template v-slot:activator="{ props }">
-            <v-btn variant="text" v-bind="props" class="nav-btn" append-icon="mdi-chevron-down">Minivan Hire</v-btn>
+            <v-btn variant="text" v-bind="props" class="nav-btn" prepend-icon="mdi-van-passenger" append-icon="mdi-chevron-down">Minivan Hire</v-btn>
           </template>
           <v-list class="dropdown-list py-2" bg-color="white" elevation="4">
             <v-list-item v-for="(item, index) in travellerHireOptions" :key="index" link class="dropdown-item px-4 py-2">
@@ -64,10 +67,9 @@
           </v-list>
         </v-menu>
 
-
-        <v-btn variant="text" to="/payment" class="nav-btn">Help Support</v-btn>
-        <v-btn variant="text" to="/send-enquiry" :active="false" class="nav-btn">Manage Booking</v-btn>
-        <v-btn variant="flat" color="primary" to="/contact" class="nav-btn ml-2 px-6 rounded-pill text-white fw-bold">Book Now</v-btn>
+        <v-btn variant="text" to="/payment" class="nav-btn" prepend-icon="mdi-headset">Help Support</v-btn>
+        <v-btn variant="text" to="/send-enquiry" :active="false" class="nav-btn" prepend-icon="mdi-calendar-check-outline">Manage Booking</v-btn>
+        <v-btn variant="flat" color="primary" to="/contact" class="nav-btn ml-2 px-6 rounded-pill text-white fw-bold" prepend-icon="mdi-bookmark-check">Book Now</v-btn>
       </div>
 
       <!-- Mobile Menu Toggle -->
@@ -103,8 +105,12 @@
         </v-btn>
     </div>
     <v-list nav class="mt-2">
-      <v-list-item to="/" prepend-icon="mdi-home-outline" title="Home" class="mb-1"></v-list-item>
-      <v-list-item href="https://www.ebookmyseat.in/" target="_blank" prepend-icon="mdi-ticket-outline" title="Bus Ticket" class="mb-1"></v-list-item>
+      <v-list-item to="/" class="mb-1">
+        <template v-slot:prepend>
+          <v-icon class="moving-bus-icon mr-5" color="primary">mdi-bus-side</v-icon>
+        </template>
+        <v-list-item-title>Home</v-list-item-title>
+      </v-list-item>
 
       <v-list-group value="Bus Hire">
         <template v-slot:activator="{ props }">
@@ -112,6 +118,8 @@
         </template>
         <v-list-item v-for="(item, i) in busHireOptions" :key="i" :title="item" class="pl-12"></v-list-item>
       </v-list-group>
+
+      <v-list-item href="https://www.ebookmyseat.in/" target="_blank" prepend-icon="mdi-ticket-outline" title="Bus Ticket" class="mb-1"></v-list-item>
 
       <v-list-group value="Car Hire">
         <template v-slot:activator="{ props }">
@@ -122,15 +130,14 @@
 
       <v-list-group value="Traveller Hire">
         <template v-slot:activator="{ props }">
-          <v-list-item v-bind="props" prepend-icon="mdi-van-passenger" title="Traveller Hire" class="mb-1"></v-list-item>
+          <v-list-item v-bind="props" prepend-icon="mdi-van-passenger" title="Minivan Hire" class="mb-1"></v-list-item>
         </template>
         <v-list-item v-for="(item, i) in travellerHireOptions" :key="i" :title="item" class="pl-12"></v-list-item>
       </v-list-group>
 
-      <v-list-item to="/gallery" prepend-icon="mdi-image-multiple-outline" title="Gallery" class="mb-1"></v-list-item>
-      <v-list-item to="/payment" prepend-icon="mdi-credit-card-outline" title="Online Payment" class="mb-1"></v-list-item>
-      <v-list-item to="/send-enquiry" :active="false" prepend-icon="mdi-email-fast-outline" title="Send Enquiry" class="mb-1"></v-list-item>
-      <v-list-item to="/contact" prepend-icon="mdi-phone-outline" title="Contact Us" class="mb-1"></v-list-item>
+      <v-list-item to="/payment" prepend-icon="mdi-headset" title="Help Support" class="mb-1"></v-list-item>
+      <v-list-item to="/send-enquiry" :active="false" prepend-icon="mdi-calendar-check-outline" title="Manage Booking" class="mb-1"></v-list-item>
+      <v-list-item to="/contact" prepend-icon="mdi-bookmark-check" title="Book Now" class="mb-1"></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -277,5 +284,20 @@ const travellerHireOptions = [
   letter-spacing: 1px;
   color: #2B2B2B;
   white-space: nowrap;
+}
+
+/* Animated Bus Icon */
+.moving-bus-icon {
+  animation: bus-bounce 2.5s infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes bus-bounce {
+  0% { transform: translateY(0); }
+  10% { transform: translateY(-5px); }
+  20% { transform: translateY(0); }
+  30% { transform: translateY(-3px); }
+  40% { transform: translateY(0); }
+  100% { transform: translateY(0); }
 }
 </style>

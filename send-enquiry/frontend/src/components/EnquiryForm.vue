@@ -179,24 +179,24 @@
               </div>
             </div>
 
-            <v-row dense>
-              <v-col cols="12" sm="6" md="4" v-for="service in serviceTypes" :key="service.value">
+            <div class="marquee-container">
+              <div class="marquee-track">
                 <div
-                  class="service-card"
+                  v-for="(service, index) in serviceTypes.concat(serviceTypes)" :key="index"
+                  class="service-card-mini"
                   :class="{ selected: store.form.serviceType === service.value }"
                   @click="store.form.serviceType = service.value"
                 >
                   <div class="service-card-icon" :class="{ 'icon-active': store.form.serviceType === service.value }">
-                    <v-icon size="28" :color="store.form.serviceType === service.value ? 'white' : '#709C34'">{{ service.icon }}</v-icon>
+                    <v-icon size="24" :color="store.form.serviceType === service.value ? 'white' : '#709C34'">{{ service.icon }}</v-icon>
                   </div>
                   <h3 class="service-card-title">{{ service.label }}</h3>
-                  <p class="service-card-desc">{{ service.desc }}</p>
                   <div class="service-check" v-if="store.form.serviceType === service.value">
-                    <v-icon size="16" color="white">mdi-check</v-icon>
+                    <v-icon size="12" color="white">mdi-check</v-icon>
                   </div>
                 </div>
-              </v-col>
-            </v-row>
+              </div>
+            </div>
           </div>
 
           <!-- Section divider -->
@@ -921,62 +921,86 @@ const submitForm = async () => {
   50% { transform: translateY(3px); }
 }
 
-/* ── Service Cards ────────────────────────── */
-.service-card {
+/* ── Service Cards Mini (One Line) ────────────────────────── */
+.marquee-container {
+  overflow: hidden;
+  width: 100%;
+  padding-bottom: 12px;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 12px;
+  animation: scroll-marquee 25s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+@keyframes scroll-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 6px)); }
+}
+.service-card-mini {
+  flex: 0 0 auto;
+  min-width: 120px;
   border: 2px solid #E8ECE3;
-  border-radius: 16px;
-  padding: 20px 16px;
+  border-radius: 12px;
+  padding: 12px 10px;
   text-align: center;
   cursor: pointer;
   background: white;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-.service-card:hover {
+.service-card-mini:hover {
   border-color: #B0CC8E;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(112, 156, 52, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(112, 156, 52, 0.12);
 }
-.service-card.selected {
+.service-card-mini.selected {
   border-color: #709C34;
   background: linear-gradient(145deg, #f2f9ea 0%, #e8f5d8 100%);
   box-shadow: 0 6px 20px rgba(112, 156, 52, 0.2);
+  transform: translateY(-4px) scale(1.02);
 }
-.service-card-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+.service-card-mini .service-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background: #EDF3E2;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.service-card-icon.icon-active {
+.service-card-mini .service-card-icon.icon-active {
   background: linear-gradient(135deg, #709C34, #8BBF45);
   box-shadow: 0 4px 14px rgba(112, 156, 52, 0.35);
   transform: scale(1.1);
 }
-.service-card-title {
-  font-size: 14px;
+.service-card-mini .service-card-title {
+  font-size: 11.5px;
   font-weight: 700;
   color: #263238;
-  margin-bottom: 4px;
-}
-.service-card-desc {
-  font-size: 11px;
-  color: #78909C;
   margin-bottom: 0;
-  line-height: 1.4;
+  line-height: 1.2;
+  white-space: nowrap;
 }
-.service-check {
+.service-card-mini .service-check {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 24px;
-  height: 24px;
+  top: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #709C34;
   display: flex;
@@ -984,10 +1008,19 @@ const submitForm = async () => {
   justify-content: center;
   animation: pop-in 0.3s ease;
 }
+
+
+
 @keyframes pop-in {
   0% { transform: scale(0); }
   70% { transform: scale(1.2); }
   100% { transform: scale(1); }
+}
+
+@media (max-width: 900px) {
+  .service-card-mini {
+    min-width: 110px;
+  }
 }
 
 /* ── Airport Highlight ────────────────────────── */
@@ -1178,9 +1211,6 @@ const submitForm = async () => {
   }
   .section-divider {
     padding: 0 16px;
-  }
-  .service-card {
-    padding: 14px 12px;
   }
   .step-pill {
     padding: 8px 14px;
