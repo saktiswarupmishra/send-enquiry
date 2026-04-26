@@ -3,8 +3,22 @@
     <v-container class="d-flex align-center w-100 max-width-1200 pa-0">
       <!-- Branding / Logo -->
       <router-link to="/" class="text-decoration-none d-flex align-center mr-8">
-        <v-icon color="primary" size="x-large" class="mr-2">mdi-bus-double-decker</v-icon>
-        <span class="text-h6 font-weight-black logo-text" style="color: #212529;">ANT <span class="text-primary">TRAVELS</span></span>
+        <div class="ant-logo">
+          <div class="ant-logo-text">ANT</div>
+          <div class="ant-logo-subtitle">
+            <div class="logo-lines-group">
+              <span class="logo-line-thin"></span>
+              <span class="logo-line-thin"></span>
+              <span class="logo-line-thin"></span>
+            </div>
+            <span class="logo-tourist">TOURIST</span>
+            <div class="logo-lines-group">
+              <span class="logo-line-thin"></span>
+              <span class="logo-line-thin"></span>
+              <span class="logo-line-thin"></span>
+            </div>
+          </div>
+        </div>
       </router-link>
 
       <v-spacer></v-spacer>
@@ -50,8 +64,9 @@
           </v-list>
         </v-menu>
 
-        <v-btn variant="text" to="/gallery" class="nav-btn">Gallery</v-btn>
-        <v-btn variant="text" to="/payment" class="nav-btn">Online Payment</v-btn>
+
+        <v-btn variant="text" to="/payment" class="nav-btn">Help</v-btn>
+        <v-btn variant="text" to="/send-enquiry" :active="false" class="nav-btn">Manage Booking</v-btn>
         <v-btn variant="flat" color="primary" to="/contact" class="nav-btn ml-2 px-6 rounded-pill text-white fw-bold">Contact Us</v-btn>
       </div>
 
@@ -66,8 +81,22 @@
   <v-navigation-drawer v-model="drawer" temporary location="right">
     <div class="pa-4 pt-6 d-flex justify-space-between align-center border-b">
         <router-link to="/" class="text-decoration-none d-flex align-center">
-            <v-icon color="primary" size="large" class="mr-2">mdi-bus-double-decker</v-icon>
-            <span class="text-subtitle-1 font-weight-black" style="color: #212529;">ANT <span class="text-primary">TRAVELS</span></span>
+          <div class="ant-logo" style="transform: scale(0.85); transform-origin: left center;">
+            <div class="ant-logo-text">ANT</div>
+            <div class="ant-logo-subtitle">
+              <div class="logo-lines-group">
+                <span class="logo-line-thin"></span>
+                <span class="logo-line-thin"></span>
+                <span class="logo-line-thin"></span>
+              </div>
+              <span class="logo-tourist">TOURIST</span>
+              <div class="logo-lines-group">
+                <span class="logo-line-thin"></span>
+                <span class="logo-line-thin"></span>
+                <span class="logo-line-thin"></span>
+              </div>
+            </div>
+          </div>
         </router-link>
         <v-btn icon size="small" variant="text" @click="drawer = false">
             <v-icon>mdi-close</v-icon>
@@ -100,6 +129,7 @@
 
       <v-list-item to="/gallery" prepend-icon="mdi-image-multiple-outline" title="Gallery" class="mb-1"></v-list-item>
       <v-list-item to="/payment" prepend-icon="mdi-credit-card-outline" title="Online Payment" class="mb-1"></v-list-item>
+      <v-list-item to="/send-enquiry" :active="false" prepend-icon="mdi-email-fast-outline" title="Send Enquiry" class="mb-1"></v-list-item>
       <v-list-item to="/contact" prepend-icon="mdi-phone-outline" title="Contact Us" class="mb-1"></v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -201,5 +231,51 @@ const travellerHireOptions = [
 :deep(.v-list-item--active) {
     background-color: rgba(25, 118, 210, 0.08) !important;
     color: var(--v-primary-base, #1976D2) !important;
+}
+
+/* ANT Logo */
+.ant-logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 4px 6px;
+}
+.ant-logo-text {
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 0.8;
+  color: #2B2B2B;
+  text-align: center;
+  font-family: 'Arial Black', Impact, sans-serif;
+  text-transform: uppercase;
+  transform: scaleX(1.15);
+  margin-bottom: 2px;
+}
+.ant-logo-subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 3px;
+  padding: 0 4px;
+}
+.logo-lines-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 20px;
+}
+.logo-line-thin {
+  width: 100%;
+  height: 1px;
+  background-color: #2B2B2B;
+}
+.logo-tourist {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #2B2B2B;
+  white-space: nowrap;
 }
 </style>
