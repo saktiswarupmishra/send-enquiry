@@ -55,6 +55,9 @@
       </v-row>
     </v-container>
 
+    <!-- Skyline Banner -->
+    <div class="skyline-banner"></div>
+
     <!-- Dark Footer -->
     <div class="footer-dark">
       <v-container>
@@ -219,6 +222,20 @@ const corporateLinks = ref([
   font-size: 15px !important;
 }
 
+
+/* Skyline Banner */
+.skyline-banner {
+  height: 130px;
+  background-image: url('/skyline.png');
+  background-repeat: repeat-x;
+  background-position: bottom center;
+  background-size: auto 100%;
+  width: 100%;
+  opacity: 0.85; /* Professional opacity for blending */
+  margin-bottom: -1px; /* To prevent tiny gaps before footer-dark */
+  position: relative;
+  z-index: 1;
+}
 
 /* Dark Footer */
 .footer-dark {
