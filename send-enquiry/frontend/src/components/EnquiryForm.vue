@@ -159,7 +159,7 @@
             </div>
 
             <v-row dense>
-              <v-col cols="12" sm="4" v-for="service in serviceTypes" :key="service.value">
+              <v-col cols="12" sm="6" md="4" v-for="service in serviceTypes" :key="service.value">
                 <div
                   class="service-card"
                   :class="{ selected: store.form.serviceType === service.value }"
@@ -534,9 +534,12 @@ const goToStep = (step) => {
 }
 
 const serviceTypes = [
-  { value: 'local', label: 'Local & Outstation', icon: 'mdi-map-marker-distance', desc: 'City travel or intercity trips' },
-  { value: 'airport', label: 'Airport Transfer', icon: 'mdi-airplane-takeoff', desc: 'Pickup & drop to any airport' },
-  { value: 'special', label: 'Wedding & Corporate', icon: 'mdi-star-circle', desc: 'Premium event transportation' },
+  { value: 'local', label: 'Local & Outstation', icon: 'mdi-map-marker-distance', desc: 'Seamless travel across cities or short local travels.' },
+  { value: 'wedding', label: 'Wedding Transport', icon: 'mdi-heart-outline', desc: 'Luxury fleet to complement your special day.' },
+  { value: 'group', label: 'Group Tours', icon: 'mdi-account-group', desc: 'Curated sightseeing with knowledgeable crew.' },
+  { value: 'airport', label: 'Airport Transfers', icon: 'mdi-airplane-landing', desc: 'Punctual pickups and drop-offs for VIP delegations.' },
+  { value: 'corporate', label: 'Corporate Travel', icon: 'mdi-briefcase-outline', desc: 'Productivity-focused interiors for teams on the go.' },
+  { value: 'school', label: 'School Trips', icon: 'mdi-bus-school', desc: 'Safety-first transportation for educational excursions.' }
 ]
 
 const destinationItems = computed(() => {

@@ -6,51 +6,53 @@
     </div>
 
     <v-row>
-      <v-col cols="12" sm="6" md="3" v-for="i in 4" :key="i">
-        <v-card class="rounded-xl elevation-2 overflow-hidden bg-white h-100 d-flex flex-column custom-border">
+      <v-col cols="12" sm="6" md="6" lg="3" v-for="(bus, i) in buses" :key="i">
+        <v-card class="rounded-xl elevation-2 overflow-hidden bg-white h-100 d-flex flex-column custom-border hover-card">
           <v-img src="/bus.jpg" height="160" cover class="position-relative">
-            <v-chip
-              color="error"
-              size="small"
-              class="position-absolute top-0 right-0 ma-2 font-weight-bold elevation-1"
-            >
-              25% OFF
-            </v-chip>
+            <div class="discount-badge elevation-4">
+              <div class="badge-content">
+                <span class="discount-value">25%</span>
+                <span class="discount-text">OFF</span>
+              </div>
+            </div>
           </v-img>
           
           <v-card-text class="pa-4 flex-grow-1 d-flex flex-column">
-            <h3 class="text-subtitle-2 font-weight-bold text-grey-darken-4 mb-2" style="font-size: 15px !important;">21 Sleeper (2+1) AC Deluxe(TATA)</h3>
+            <h3 class="text-subtitle-2 font-weight-bold text-grey-darken-4 mb-2 text-wrap" style="font-size: 13px !important; line-height: 1.2; min-height: 32px;" :title="bus.name">{{ bus.name }}</h3>
             
-            <div class="d-flex flex-wrap mb-3" style="gap: 4px;">
-              <v-chip size="x-small" variant="outlined" color="grey-darken-1" class="font-weight-medium bg-grey-lighten-4">
-                <v-icon left size="x-small" class="mr-1">mdi-snowflake</v-icon> AC
+            <div class="d-flex flex-nowrap mb-3 overflow-x-auto hide-scrollbar" style="gap: 4px; padding-bottom: 2px;">
+              <v-chip size="small" variant="flat" color="#f0f2f5" class="text-grey-darken-3 font-weight-bold px-2 flex-shrink-0" style="font-size: 9px;">
+                <v-icon left size="14" class="mr-1" color="grey-darken-2">mdi-seat-passenger</v-icon> 21 Seats
               </v-chip>
-              <v-chip size="x-small" variant="outlined" color="grey-darken-1" class="font-weight-medium bg-grey-lighten-4">
-                <v-icon left size="x-small" class="mr-1">mdi-wifi</v-icon> Wi-Fi
+              <v-chip size="small" variant="flat" color="#f0f2f5" class="text-grey-darken-3 font-weight-bold px-2 flex-shrink-0" style="font-size: 9px;">
+                <v-icon left size="14" class="mr-1" color="grey-darken-2">mdi-snowflake</v-icon> AC
               </v-chip>
-              <v-chip size="x-small" variant="outlined" color="grey-darken-1" class="font-weight-medium bg-grey-lighten-4">
-                <v-icon left size="x-small" class="mr-1">mdi-bottle-wine-outline</v-icon> Water Bottle
+              <v-chip size="small" variant="flat" color="#f0f2f5" class="text-grey-darken-3 font-weight-bold px-2 flex-shrink-0" style="font-size: 9px;">
+                <v-icon left size="14" class="mr-1" color="grey-darken-2">mdi-bag-suitcase</v-icon> 30 Luggage
+              </v-chip>
+              <v-chip size="small" variant="flat" color="#f0f2f5" class="text-grey-darken-3 font-weight-bold px-2 flex-shrink-0" style="font-size: 9px;">
+                <v-icon left size="14" class="mr-1" color="grey-darken-2">mdi-bottle-tonic-outline</v-icon> Water Bottle
               </v-chip>
             </div>
             
             <p class="text-caption text-grey-darken-1 mb-3 flex-grow-1" style="line-height: 1.4;">
-              Luxury AC sleeper coach meant for comfortable night travels and intercity journeys with all essential amenities for a pleasant ride.
+              {{ bus.description }}
             </p>
             
             <div class="pricing-container bg-green-lighten-5 rounded pa-2 mt-auto border" style="border-color: rgba(112, 156, 52, 0.3) !important;">
-              <div class="d-flex justify-space-between align-center mb-1">
-                <span class="text-caption text-grey-darken-3 font-weight-medium" style="font-size: 11px !important;">Local (4hrs/40km)</span>
-                <div class="d-flex align-center">
-                  <span class="text-decoration-line-through text-grey mr-1" style="font-size: 11px;">₹1200</span>
-                  <span class="font-weight-bold text-green-darken-3" style="font-size: 14px;">₹900</span>
+              <div class="d-flex justify-space-between align-center mb-1 flex-nowrap" style="white-space: nowrap;">
+                <span class="text-caption text-grey-darken-3 font-weight-medium text-truncate mr-1" style="font-size: 10px !important;" title="Local City Travel (4hrs/40km)">Local City Travel (4hrs/40km)</span>
+                <div class="d-flex align-center flex-shrink-0">
+                  <span class="text-decoration-line-through text-grey mr-1" style="font-size: 10px;">₹{{ bus.localOldPrice }}</span>
+                  <span class="font-weight-bold text-green-darken-3" style="font-size: 14px;">₹{{ bus.localPrice }}</span>
                 </div>
               </div>
               <v-divider class="my-1 border-opacity-50" color="success"></v-divider>
-              <div class="d-flex justify-space-between align-center">
-                <span class="text-caption text-grey-darken-3 font-weight-medium" style="font-size: 11px !important;">Outstation (Per km)</span>
-                <div class="d-flex align-center">
-                  <span class="text-decoration-line-through text-grey mr-1" style="font-size: 11px;">₹80</span>
-                  <span class="font-weight-bold text-green-darken-3" style="font-size: 14px;">₹60</span>
+              <div class="d-flex justify-space-between align-center flex-nowrap" style="white-space: nowrap;">
+                <span class="text-caption text-grey-darken-3 font-weight-medium text-truncate mr-1" style="font-size: 10px !important;" title="Outstation (Per km)">Outstation (Per km)</span>
+                <div class="d-flex align-center flex-shrink-0">
+                  <span class="text-decoration-line-through text-grey mr-1" style="font-size: 10px;">₹{{ bus.outstationOldPrice }}</span>
+                  <span class="font-weight-bold text-green-darken-3" style="font-size: 14px;">₹{{ bus.outstationPrice }}</span>
                 </div>
               </div>
             </div>
@@ -59,13 +61,14 @@
           <v-divider></v-divider>
           
           <v-card-actions class="pa-3 px-4 d-flex justify-space-between bg-grey-lighten-5">
-            <v-btn variant="outlined" color="#709C34" class="px-4 rounded-lg font-weight-bold bg-white text-caption" height="32" style="text-transform: none;">
+            <v-btn variant="outlined" color="#212121" class="px-4 rounded-lg font-weight-bold bg-white text-caption" height="32" style="text-transform: none; border-color: #e0e0e0 !important;">
               View Buses
             </v-btn>
-            <v-btn color="#709C34" variant="flat" class="px-4 rounded-lg font-weight-bold text-white text-caption" height="32" style="text-transform: none;">
+            <v-btn color="#709C34" variant="tonal" class="px-5 rounded-lg font-weight-bold text-caption" height="32" style="text-transform: none; background-color: rgba(112, 156, 52, 0.1);">
               Book Now
             </v-btn>
           </v-card-actions>
+
         </v-card>
       </v-col>
     </v-row>
@@ -73,10 +76,105 @@
 </template>
 
 <script setup>
+const buses = [
+  {
+    name: '21 Paks (2+1) AC Deluxe(TATA)',
+    description: 'Luxury AC coach meant for comfortable travels and intercity journeys with all essential amenities for a pleasant ride.',
+    localPrice: '900',
+    localOldPrice: '1200',
+    outstationPrice: '60',
+    outstationOldPrice: '80'
+  },
+  {
+    name: '27 Paks (2+2) AC Deluxe(TATA)',
+    description: 'Spacious AC coach offering premium comfort for long-distance travel and group tours. Equipped with pushback seats.',
+    localPrice: '1000',
+    localOldPrice: '1400',
+    outstationPrice: '65',
+    outstationOldPrice: '90'
+  },
+  {
+    name: '45 Paks (2+2) AC Deluxe(BharatBenz)',
+    description: 'High-capacity luxury AC coach perfect for large group travel with advanced suspension for a smooth intercity ride.',
+    localPrice: '1500',
+    localOldPrice: '2000',
+    outstationPrice: '80',
+    outstationOldPrice: '110'
+  },
+  {
+    name: '45 Paks (2+2) AC Deluxe(Valvo)',
+    description: 'Premium multi-axle Valvo coach delivering ultimate luxury, safety, and comfort for long intercity journeys.',
+    localPrice: '1800',
+    localOldPrice: '2400',
+    outstationPrice: '95',
+    outstationOldPrice: '130'
+  }
+];
 </script>
 
 <style scoped>
 .custom-border {
   border: 1px solid #e0e0e0;
+}
+
+.hover-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12) !important;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #FF6B6B 0%, #D90429 100%);
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(217, 4, 41, 0.4) !important;
+  transform: rotate(10deg);
+  border: 2px dashed rgba(255, 255, 255, 0.7);
+  z-index: 2;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hover-card:hover .discount-badge {
+  transform: scale(1.15) rotate(0deg);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+.badge-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.discount-value {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.discount-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 </style>
