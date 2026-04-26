@@ -55,8 +55,6 @@
       </v-row>
     </v-container>
 
-
-
     <!-- Dark Footer -->
     <div class="footer-dark">
       <v-container>
@@ -70,11 +68,9 @@
                   <span class="logo-line-thin"></span>
                   <span class="logo-line-thin"></span>
                   <span class="logo-line-thin"></span>
-                  <span class="logo-line-thin"></span>
                 </div>
                 <span class="logo-tourist">TOURIST</span>
                 <div class="logo-lines-group">
-                  <span class="logo-line-thin"></span>
                   <span class="logo-line-thin"></span>
                   <span class="logo-line-thin"></span>
                   <span class="logo-line-thin"></span>
@@ -224,7 +220,6 @@ const corporateLinks = ref([
 }
 
 
-
 /* Dark Footer */
 .footer-dark {
   background-color: #4b4b4b;
@@ -256,13 +251,14 @@ const corporateLinks = ref([
 .logo-lines-group {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  justify-content: center;
   flex: 1;
 }
 .logo-line-thin {
   width: 100%;
   height: 1px;
   background-color: #fff;
+  margin-block: 1.5px;
 }
 .logo-tourist {
   font-size: 13px;

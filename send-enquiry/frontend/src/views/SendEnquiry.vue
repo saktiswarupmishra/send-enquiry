@@ -1,5 +1,5 @@
 <template>
-  <div class="send-enquiry-bg pt-8 pb-16">
+  <div class="send-enquiry-bg pt-8">
     <v-container>
       <!-- Header -->
       <v-row class="mb-6">

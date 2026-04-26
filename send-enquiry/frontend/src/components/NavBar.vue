@@ -269,7 +269,7 @@ const travellerHireOptions = [
 .logo-lines-group {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  justify-content: center;
   flex: 1;
   min-width: 20px;
 }
@@ -277,6 +277,7 @@ const travellerHireOptions = [
   width: 100%;
   height: 1px;
   background-color: #2B2B2B;
+  margin-block: 1.5px;
 }
 .logo-tourist {
   font-size: 11px;

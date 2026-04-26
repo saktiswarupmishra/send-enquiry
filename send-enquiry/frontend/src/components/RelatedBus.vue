@@ -15,17 +15,17 @@
             <h3 class="text-subtitle-2 font-weight-bold text-grey-darken-4 mb-2 text-wrap" style="font-size: 13px !important; line-height: 1.2; min-height: 32px;" :title="bus.name">{{ bus.name }}</h3>
             
             <div class="d-flex flex-nowrap mb-3 overflow-x-auto hide-scrollbar" style="gap: 4px; padding-bottom: 2px;">
-              <v-chip size="small" variant="flat" color="#f0f2f5" class="text-grey-darken-3 font-weight-bold px-2 flex-shrink-0" style="font-size: 9px;">
-                <v-icon left size="14" class="mr-1" color="grey-darken-2">mdi-seat-passenger</v-icon> 21 Seats
+              <v-chip size="small" variant="tonal" color="#709C34" class="font-weight-bold px-2 flex-shrink-0" style="font-size: 10px; background-color: rgba(112, 156, 52, 0.1);">
+                <v-icon left size="14" class="mr-1" color="#709C34">mdi-seat-passenger</v-icon> <span class="text-grey-darken-3">21 Seats</span>
               </v-chip>
-              <v-chip size="small" variant="flat" color="#f0f2f5" class="text-grey-darken-3 font-weight-bold px-2 flex-shrink-0" style="font-size: 9px;">
-                <v-icon left size="14" class="mr-1" color="grey-darken-2">mdi-snowflake</v-icon> AC
+              <v-chip size="small" variant="tonal" color="#709C34" class="font-weight-bold px-2 flex-shrink-0" style="font-size: 10px; background-color: rgba(112, 156, 52, 0.1);">
+                <v-icon left size="14" class="mr-1" color="#709C34">mdi-snowflake</v-icon> <span class="text-grey-darken-3">AC</span>
               </v-chip>
-              <v-chip size="small" variant="flat" color="#f0f2f5" class="text-grey-darken-3 font-weight-bold px-2 flex-shrink-0" style="font-size: 9px;">
-                <v-icon left size="14" class="mr-1" color="grey-darken-2">mdi-bag-suitcase</v-icon> 30 Luggage
+              <v-chip size="small" variant="tonal" color="#709C34" class="font-weight-bold px-2 flex-shrink-0" style="font-size: 10px; background-color: rgba(112, 156, 52, 0.1);">
+                <v-icon left size="14" class="mr-1" color="#709C34">mdi-bag-suitcase</v-icon> <span class="text-grey-darken-3">30 Luggage</span>
               </v-chip>
-              <v-chip size="small" variant="flat" color="#f0f2f5" class="text-grey-darken-3 font-weight-bold px-2 flex-shrink-0" style="font-size: 9px;">
-                <v-icon left size="14" class="mr-1" color="grey-darken-2">mdi-bottle-tonic-outline</v-icon> Water Bottle
+              <v-chip size="small" variant="tonal" color="#709C34" class="font-weight-bold px-2 flex-shrink-0" style="font-size: 10px; background-color: rgba(112, 156, 52, 0.1);">
+                <v-icon left size="14" class="mr-1" color="#709C34">mdi-bottle-tonic-outline</v-icon> <span class="text-grey-darken-3">Water Bottle</span>
               </v-chip>
             </div>
             
