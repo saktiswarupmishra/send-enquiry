@@ -199,6 +199,10 @@
             </div>
           </div>
 
+          <!-- Section divider + Vehicle Details (revealed on service select) -->
+          <transition name="vehicle-reveal">
+          <div v-if="store.form.serviceType" key="vehicle-details-wrapper">
+
           <!-- Section divider -->
           <div class="section-divider">
             <div class="divider-line"></div>
@@ -470,24 +474,8 @@
               </v-col>
             </v-row>
             <v-row dense class="mb-2">
-              <v-col cols="12" sm="6">
-                <label class="field-label">Estimated Kilometers</label>
-                <v-text-field
-                  v-model="store.form.estimatedKms"
-                  type="number"
-                  placeholder="e.g. 120"
-                  variant="outlined"
-                  density="comfortable"
-                  hide-details
-                  bg-color="white"
-                  class="premium-input"
-                  prepend-inner-icon="mdi-map-marker-distance"
-                  min="1"
-                  suffix="km"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <label class="field-label">Expected Fare / Budget</label>
+              <v-col cols="12">
+                <label class="field-label">Fare</label>
                 <div v-if="computedFare" class="fare-card">
                   <div class="fare-card-header">
                     <v-icon size="16" color="#709C34" class="mr-1">mdi-tag-check-outline</v-icon>
@@ -510,6 +498,9 @@
               </v-col>
             </v-row>
           </div>
+
+          </div>
+          </transition>
 
           <!-- Next Button -->
           <div class="submit-section">
@@ -794,33 +785,24 @@ const computedFare = computed(() => {
   const tripType = store.form.tripType
   const kms = parseInt(store.form.estimatedKms) || 0
 
-  // Local trip: use package pricing, scaled by km ratio
+  // Local trip: use package pricing based on trip type km
   if (serviceType === 'local') {
     const packageKm = extractKmFromTripType(tripType)
     if (packageKm > 0) {
-      const ratio = kms > 0 ? kms / packageKm : 1
-      const oldPrice = Math.round(pricing.localOldPrice * ratio)
-      const newPrice = Math.round(pricing.localPrice * ratio)
       return {
-        oldPrice: oldPrice.toLocaleString('en-IN'),
-        newPrice: newPrice.toLocaleString('en-IN'),
-        breakdown: `${vehicle.split('(')[0].trim()} • ${kms || packageKm} km local`
+        oldPrice: pricing.localOldPrice.toLocaleString('en-IN'),
+        newPrice: pricing.localPrice.toLocaleString('en-IN'),
+        breakdown: `${vehicle.split('(')[0].trim()} • ${packageKm} km local package`
       }
     }
   }
 
-  // Outstation / other: per-km pricing
-  if (kms > 0) {
-    const oldPrice = pricing.outstationOldPrice * kms
-    const newPrice = pricing.outstationPrice * kms
-    return {
-      oldPrice: oldPrice.toLocaleString('en-IN'),
-      newPrice: newPrice.toLocaleString('en-IN'),
-      breakdown: `${vehicle.split('(')[0].trim()} • ${kms} km × ₹${pricing.outstationPrice}/km`
-    }
+  // Outstation / other: show per-km pricing
+  return {
+    oldPrice: pricing.outstationOldPrice.toLocaleString('en-IN'),
+    newPrice: pricing.outstationPrice.toLocaleString('en-IN'),
+    breakdown: `${vehicle.split('(')[0].trim()} • ₹${pricing.outstationPrice}/km outstation rate`
   }
-
-  return null
 })
 
 // Sync computed fare to store for submission

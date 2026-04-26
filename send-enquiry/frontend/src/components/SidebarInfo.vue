@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 d-flex flex-column" style="gap: 24px;">
+  <div class="d-flex flex-column" style="gap: 24px;">
     
     <!-- Map Card -->
     <v-card class="rounded-xl overflow-hidden bg-white mx-1" style="box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; border: 1px solid #E1E3E6;">
