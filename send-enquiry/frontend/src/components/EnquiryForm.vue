@@ -534,7 +534,8 @@ const goToStep = (step) => {
 }
 
 const serviceTypes = [
-  { value: 'local', label: 'Local & Outstation', icon: 'mdi-map-marker-distance', desc: 'Seamless travel across cities or short local travels.' },
+  { value: 'local', label: 'Local Trip', icon: 'mdi-city-variant-outline', desc: 'Seamless travel across short local routes.' },
+  { value: 'outstation', label: 'Outstation Trip', icon: 'mdi-map-marker-distance', desc: 'Comfortable cross-city and intercity travels.' },
   { value: 'wedding', label: 'Wedding Transport', icon: 'mdi-heart-outline', desc: 'Luxury fleet to complement your special day.' },
   { value: 'group', label: 'Group Tours', icon: 'mdi-account-group', desc: 'Curated sightseeing with knowledgeable crew.' },
   { value: 'airport', label: 'Airport Transfers', icon: 'mdi-airplane-landing', desc: 'Punctual pickups and drop-offs for VIP delegations.' },
@@ -543,14 +544,15 @@ const serviceTypes = [
 ]
 
 const destinationItems = computed(() => {
-  if (store.form.serviceType === 'airport') {
-    return ['Airport Pickup', 'Airport Drop-off', 'Airport Round Trip']
-  }
+  if (store.form.serviceType === 'airport') return ['Airport Pickup', 'Airport Drop-off', 'Airport Round Trip']
+  if (store.form.serviceType === 'local') return ['Local City Travel']
+  if (store.form.serviceType === 'outstation') return ['Outstation']
+  
   return ['Local City Travel', 'Outstation']
 })
 
 const tripTypeItems = computed(() => {
-  if (store.form.serviceType === 'airport') {
+  if (store.form.serviceType === 'airport' || store.form.serviceType === 'outstation') {
     return ['One Way', 'Round Trip', 'Multi-City']
   }
   return ['4hrs/40km', '8hrs/80km', '12hrs/120km', '16hrs/160km', '24hrs/200km']
