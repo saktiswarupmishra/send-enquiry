@@ -56,7 +56,47 @@
     </v-container>
 
     <!-- Skyline Banner -->
-    <div class="skyline-banner"></div>
+    <div class="skyline-wrapper">
+      <svg class="skyline-banner" viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sky-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#e0e0e0;stop-opacity:1" />
+          </linearGradient>
+          <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="1" />
+            <feOffset dx="0" dy="1" result="offsetblur" />
+            <feComponentTransfer>
+              <feFuncA type="linear" slope="0.2" />
+            </feComponentTransfer>
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#sky-grad)" />
+        
+        <!-- Detailed Landmarks -->
+        <!-- Temple Shapes Left -->
+        <path d="M50 120 L50 90 L60 70 L70 90 L70 120 Z M80 120 L80 80 L95 60 L110 80 L110 120 Z" fill="#cccccc" />
+        
+        <!-- Lotus Temple -->
+        <path d="M200 120 L160 110 Q200 60 240 110 L240 120 Z M180 110 Q200 80 220 110 Z" fill="#d5d5d5" />
+        
+        <!-- Taj Mahal -->
+        <path d="M400 120 L400 100 L420 100 L420 120 Z M580 120 L580 100 L600 100 L600 120 Z M450 120 L450 90 L530 90 L530 120 Z M460 90 Q490 30 520 90 Z" fill="#bfbfbf" />
+        
+        <!-- India Gate -->
+        <path d="M800 120 L800 60 L880 60 L880 120 Z M820 120 L820 80 Q840 70 860 80 L860 120 Z" fill="#b0b0b0" />
+        
+        <!-- Qutub Minar -->
+        <path d="M1000 120 L1005 30 L1015 30 L1020 120 Z" fill="#a0a0a0" />
+        
+        <!-- Ground Line -->
+        <rect y="115" width="1200" height="5" fill="#f0f0f0" />
+      </svg>
+    </div>
 
     <!-- Dark Footer -->
     <div class="footer-dark">
@@ -224,17 +264,23 @@ const corporateLinks = ref([
 
 
 /* Skyline Banner */
-.skyline-banner {
-  height: 130px;
-  background-image: url('/skyline.png');
-  background-repeat: repeat-x;
-  background-position: bottom center;
-  background-size: auto 100%;
+.skyline-wrapper {
+  background-color: #f5f5f5;
   width: 100%;
-  opacity: 0.85; /* Professional opacity for blending */
-  margin-bottom: -1px; /* To prevent tiny gaps before footer-dark */
-  position: relative;
-  z-index: 1;
+}
+
+.skyline-banner {
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.skyline-svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
 }
 
 /* Dark Footer */
