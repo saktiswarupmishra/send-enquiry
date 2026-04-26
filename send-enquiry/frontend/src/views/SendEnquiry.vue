@@ -4,12 +4,6 @@
       <!-- Header -->
       <v-row class="mb-6">
         <v-col cols="12" class="text-center">
-          <!-- Back button -->
-          <div class="d-flex justify-start mb-4">
-            <v-btn variant="flat" color="white" class="rounded-pill px-6 font-weight-medium text-capitalize shadow-sm" rounded>
-              <v-icon left size="small" class="mr-2">mdi-arrow-left</v-icon> Back
-            </v-btn>
-          </div>
           <h1 class="text-h4 font-weight-black text-grey-darken-4 mb-2" style="font-family: 'Inter', sans-serif;">Send Enquiry</h1>
           <p class="text-subtitle-1 text-grey-darken-1 font-weight-medium">"Book Bus, Tempo Traveller & Car at Best Price in Delhi NCR"</p>
         </v-col>
