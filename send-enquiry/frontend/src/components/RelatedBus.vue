@@ -9,12 +9,6 @@
       <v-col cols="12" sm="6" md="6" lg="3" v-for="(bus, i) in buses" :key="i">
         <v-card class="rounded-xl elevation-2 overflow-hidden bg-white h-100 d-flex flex-column custom-border hover-card">
           <v-img src="/bus.jpg" height="160" cover class="position-relative">
-            <div class="discount-badge elevation-4">
-              <div class="badge-content">
-                <span class="discount-value">25%</span>
-                <span class="discount-text">OFF</span>
-              </div>
-            </div>
           </v-img>
           
           <v-card-text class="pa-4 flex-grow-1 d-flex flex-column">
@@ -126,49 +120,6 @@ const buses = [
   box-shadow: 0 12px 24px rgba(0,0,0,0.12) !important;
 }
 
-.discount-badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #D90429 100%);
-  color: white;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 15px rgba(217, 4, 41, 0.4) !important;
-  transform: rotate(10deg);
-  border: 2px dashed rgba(255, 255, 255, 0.7);
-  z-index: 2;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.hover-card:hover .discount-badge {
-  transform: scale(1.15) rotate(0deg);
-  border: 2px solid rgba(255, 255, 255, 0.9);
-}
-
-.badge-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1.1;
-}
-
-.discount-value {
-  font-size: 16px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
-}
-
-.discount-text {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
 
 .hide-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
