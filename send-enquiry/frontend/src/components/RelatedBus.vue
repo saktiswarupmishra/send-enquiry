@@ -72,7 +72,7 @@
 <script setup>
 const buses = [
   {
-    name: '21 Paks (2+1) AC Deluxe(TATA)',
+    name: '21 PAX (2+1) AC Deluxe(TATA)',
     description: 'Luxury AC coach meant for comfortable travels and intercity journeys with all essential amenities for a pleasant ride.',
     localPrice: '900',
     localOldPrice: '1200',
@@ -80,7 +80,7 @@ const buses = [
     outstationOldPrice: '80'
   },
   {
-    name: '27 Paks (2+2) AC Deluxe(TATA)',
+    name: '27 PAX (2+2) AC Deluxe(TATA)',
     description: 'Spacious AC coach offering premium comfort for long-distance travel and group tours. Equipped with pushback seats.',
     localPrice: '1000',
     localOldPrice: '1400',
@@ -88,7 +88,7 @@ const buses = [
     outstationOldPrice: '90'
   },
   {
-    name: '45 Paks (2+2) AC Deluxe(BharatBenz)',
+    name: '45 PAX (2+2) AC Deluxe(BharatBenz)',
     description: 'High-capacity luxury AC coach perfect for large group travel with advanced suspension for a smooth intercity ride.',
     localPrice: '1500',
     localOldPrice: '2000',
@@ -96,7 +96,7 @@ const buses = [
     outstationOldPrice: '110'
   },
   {
-    name: '45 Paks (2+2) AC Deluxe(Valvo)',
+    name: '45 PAX (2+2) AC Deluxe(Valvo)',
     description: 'Premium multi-axle Valvo coach delivering ultimate luxury, safety, and comfort for long intercity journeys.',
     localPrice: '1800',
     localOldPrice: '2400',

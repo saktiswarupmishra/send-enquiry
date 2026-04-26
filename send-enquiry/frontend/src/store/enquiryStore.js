@@ -30,7 +30,8 @@ export const useEnquiryStore = defineStore('enquiry', () => {
     companyName: '',
     eventPurpose: '',
     schoolName: '',
-    gradeClass: ''
+    gradeClass: '',
+    estimatedKms: ''
   })
 
   const addStop = () => {
@@ -68,7 +69,8 @@ export const useEnquiryStore = defineStore('enquiry', () => {
       companyName: '',
       eventPurpose: '',
       schoolName: '',
-      gradeClass: ''
+      gradeClass: '',
+      estimatedKms: ''
     }
   }
 

@@ -471,17 +471,42 @@
             </v-row>
             <v-row dense class="mb-2">
               <v-col cols="12" sm="6">
-                <label class="field-label">Expected Fare / Budget</label>
+                <label class="field-label">Estimated Kilometers</label>
                 <v-text-field
-                  v-model="store.form.expectedFare"
-                  placeholder="e.g. ₹ 5000"
+                  v-model="store.form.estimatedKms"
+                  type="number"
+                  placeholder="e.g. 120"
                   variant="outlined"
                   density="comfortable"
                   hide-details
                   bg-color="white"
                   class="premium-input"
-                  prepend-inner-icon="mdi-currency-inr"
+                  prepend-inner-icon="mdi-map-marker-distance"
+                  min="1"
+                  suffix="km"
                 ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label class="field-label">Expected Fare / Budget</label>
+                <div v-if="computedFare" class="fare-card">
+                  <div class="fare-card-header">
+                    <v-icon size="16" color="#709C34" class="mr-1">mdi-tag-check-outline</v-icon>
+                    <span class="fare-label">Estimated Fare</span>
+                    <v-chip size="x-small" color="#709C34" variant="flat" class="ml-auto text-white font-weight-bold" style="font-size: 9px;">25% OFF</v-chip>
+                  </div>
+                  <div class="fare-card-body">
+                    <div class="fare-old">₹{{ computedFare.oldPrice }}</div>
+                    <div class="fare-new">₹{{ computedFare.newPrice }}</div>
+                  </div>
+                  <div class="fare-card-footer">
+                    <v-icon size="12" color="grey" class="mr-1">mdi-information-outline</v-icon>
+                    <span>{{ computedFare.breakdown }}</span>
+                  </div>
+                </div>
+                <div v-else class="fare-card fare-card-empty">
+                  <v-icon size="24" color="grey-lighten-1" class="mb-1">mdi-calculator-variant-outline</v-icon>
+                  <span class="text-caption text-grey">Select vehicle & enter km to see fare</span>
+                </div>
               </v-col>
             </v-row>
           </div>
@@ -686,7 +711,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useEnquiryStore } from '../store/enquiryStore'
 
 const store = useEnquiryStore()
@@ -739,16 +764,69 @@ const tripTypeItems = computed(() => {
 })
 
 const vehicleNameItems = [
-  '9 Seater (1+1) Maharaja Force Motor',
-  '9 Seater (1+1) Maharaja Urbania',
-  '12 Seater (1+1) Maharaja Force Motor',
-  '12 Seater (2+1) Luxury Force Motor',
-  '12 Seater (2+1) Luxury Urbania',
-  '16 Seater (2+1) Luxury Force Motor',
-  '16 Seater (2+1) Luxury Urbania',
-  '20 Seater (2+1) Luxury Force Motor',
-  '25 Seater (2+2) Luxury Force Motor'
+  '21 Paks (2+1) AC Deluxe(TATA)',
+  '27 Paks (2+2) AC Deluxe(TATA)',
+  '45 Paks (2+2) AC Deluxe(BharatBenz)',
+  '45 Paks (2+2) AC Deluxe(Valvo)'
 ]
+
+// Vehicle pricing data (matches RelatedBus.vue)
+const vehiclePricing = {
+  '21 Paks (2+1) AC Deluxe(TATA)':       { localPrice: 900,  localOldPrice: 1200, outstationPrice: 60,  outstationOldPrice: 80  },
+  '27 Paks (2+2) AC Deluxe(TATA)':       { localPrice: 1000, localOldPrice: 1400, outstationPrice: 65,  outstationOldPrice: 90  },
+  '45 Paks (2+2) AC Deluxe(BharatBenz)': { localPrice: 1500, localOldPrice: 2000, outstationPrice: 80,  outstationOldPrice: 110 },
+  '45 Paks (2+2) AC Deluxe(Valvo)':      { localPrice: 1800, localOldPrice: 2400, outstationPrice: 95,  outstationOldPrice: 130 }
+}
+
+// Extract km from local trip type like '4hrs/40km'
+const extractKmFromTripType = (tripType) => {
+  if (!tripType) return 0
+  const match = tripType.match(/(\d+)km/)
+  return match ? parseInt(match[1]) : 0
+}
+
+const computedFare = computed(() => {
+  const vehicle = store.form.vehicleName
+  const pricing = vehiclePricing[vehicle]
+  if (!pricing) return null
+
+  const serviceType = store.form.serviceType
+  const tripType = store.form.tripType
+  const kms = parseInt(store.form.estimatedKms) || 0
+
+  // Local trip: use package pricing, scaled by km ratio
+  if (serviceType === 'local') {
+    const packageKm = extractKmFromTripType(tripType)
+    if (packageKm > 0) {
+      const ratio = kms > 0 ? kms / packageKm : 1
+      const oldPrice = Math.round(pricing.localOldPrice * ratio)
+      const newPrice = Math.round(pricing.localPrice * ratio)
+      return {
+        oldPrice: oldPrice.toLocaleString('en-IN'),
+        newPrice: newPrice.toLocaleString('en-IN'),
+        breakdown: `${vehicle.split('(')[0].trim()} • ${kms || packageKm} km local`
+      }
+    }
+  }
+
+  // Outstation / other: per-km pricing
+  if (kms > 0) {
+    const oldPrice = pricing.outstationOldPrice * kms
+    const newPrice = pricing.outstationPrice * kms
+    return {
+      oldPrice: oldPrice.toLocaleString('en-IN'),
+      newPrice: newPrice.toLocaleString('en-IN'),
+      breakdown: `${vehicle.split('(')[0].trim()} • ${kms} km × ₹${pricing.outstationPrice}/km`
+    }
+  }
+
+  return null
+})
+
+// Sync computed fare to store for submission
+watch(computedFare, (val) => {
+  store.form.expectedFare = val ? `₹${val.newPrice}` : ''
+})
 
 const progressPercent = computed(() => {
   const fields = [
@@ -1243,5 +1321,71 @@ const submitForm = async () => {
   .back-btn {
     min-width: 100% !important;
   }
+}
+
+/* ── Fare Card ────────────────────────── */
+.fare-card {
+  background: linear-gradient(135deg, #f6fff0 0%, #eaf5e0 100%);
+  border: 1.5px solid rgba(112, 156, 52, 0.3);
+  border-radius: 14px;
+  padding: 12px 14px;
+  min-height: 86px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: fareSlideIn 0.35s ease-out;
+}
+
+@keyframes fareSlideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.fare-card-empty {
+  background: #fafafa;
+  border-color: #e0e0e0;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.fare-card-header {
+  display: flex;
+  align-items: center;
+}
+
+.fare-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #558b2f;
+  letter-spacing: 0.3px;
+}
+
+.fare-card-body {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.fare-old {
+  font-size: 13px;
+  color: #9e9e9e;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.fare-new {
+  font-size: 22px;
+  font-weight: 800;
+  color: #33691e;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.fare-card-footer {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  color: #757575;
 }
 </style>
