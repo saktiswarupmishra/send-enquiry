@@ -188,7 +188,7 @@
                   @click="store.form.serviceType = service.value"
                 >
                   <div class="service-card-icon" :class="{ 'icon-active': store.form.serviceType === service.value }">
-                    <v-icon size="24" :color="store.form.serviceType === service.value ? 'white' : '#709C34'">{{ service.icon }}</v-icon>
+                    <v-icon size="18" :color="store.form.serviceType === service.value ? 'white' : '#709C34'">{{ service.icon }}</v-icon>
                   </div>
                   <h3 class="service-card-title">{{ service.label }}</h3>
                   <div class="service-check" v-if="store.form.serviceType === service.value">
@@ -467,6 +467,21 @@
                   bg-color="white"
                   class="premium-input"
                 ></v-select>
+              </v-col>
+            </v-row>
+            <v-row dense class="mb-2">
+              <v-col cols="12" sm="6">
+                <label class="field-label">Expected Fare / Budget</label>
+                <v-text-field
+                  v-model="store.form.expectedFare"
+                  placeholder="e.g. ₹ 5000"
+                  variant="outlined"
+                  density="comfortable"
+                  hide-details
+                  bg-color="white"
+                  class="premium-input"
+                  prepend-inner-icon="mdi-currency-inr"
+                ></v-text-field>
               </v-col>
             </v-row>
           </div>
@@ -972,8 +987,8 @@ const submitForm = async () => {
   transform: translateY(-4px) scale(1.02);
 }
 .service-card-mini .service-card-icon {
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   border-radius: 12px;
   background: #EDF3E2;
   display: flex;

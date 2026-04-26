@@ -30,7 +30,7 @@
 
           <v-card-actions class="px-4 pb-4 pt-1 d-flex justify-space-between align-center">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-0 font-weight-bold" style="font-size: 10px !important; text-transform: uppercase;">STARTS FROM</p>
+              <p class="text-caption text-grey-darken-1 mb-0 font-weight-bold" style="font-size: 10px !important; text-transform: uppercase;">STARTING FROM</p>
               <p class="font-weight-black text-h6 text-grey-darken-4 mb-0" style="line-height:1">{{ dest.price }}</p>
             </div>
             <v-btn color="#709C34" variant="flat" class="px-4 rounded-lg font-weight-bold text-white text-caption" height="32" style="text-transform: none;">
