@@ -89,10 +89,10 @@
             <div v-if="store.form.serviceType" class="mt-2">
               <!-- Service Packages -->
               <div class="mb-5">
-                <label class="form-label font-weight-medium text-grey-darken-3 d-block mb-3">Service Packages</label>
+                <label class="form-label font-weight-medium text-grey-darken-3 d-block mb-3">Packages</label>
                 <v-item-group
                   v-model="store.form.tripType"
-                  class="d-flex flex-wrap"
+                  class="d-flex package-scroll-container"
                   style="gap: 16px;"
                   selected-class="selected-package-premium"
                 >
@@ -103,19 +103,23 @@
                     v-slot="{ isSelected, toggle }"
                   >
                     <v-card
-                      :class="['service-card-clean', { 'service-item-selected-clean': isSelected }]"
-                      :style="{ animationDelay: `${index * 0.08}s` }"
+                      :class="['service-card-clean', 'package-animated', { 'service-item-selected-clean': isSelected }]"
+                      :style="{ animationDelay: `${index * 0.12}s` }"
                       @click="toggle"
                       elevation="0"
-                      class="d-flex align-center px-2 py-2"
-                      rounded="xl"
+                      class="d-flex align-center px-1 py-1"
+                      rounded="lg"
                     >
-                      <div class="icon-square mr-3" :class="{ 'icon-square-active': isSelected }" style="width: 40px; height: 40px; border-radius: 10px;">
-                        <v-icon :color="isSelected ? 'white' : '#709C34'" size="20">
+                      <div class="icon-square mr-2" :class="{ 'icon-square-active': isSelected }" style="width: 30px; height: 30px; border-radius: 8px;">
+                        <v-icon :color="isSelected ? 'white' : '#709C34'" size="16">
                           {{ isSelected ? 'mdi-check' : 'mdi-circle-outline' }}
                         </v-icon>
                       </div>
-                      <span class="text-body-2 font-weight-bold pr-3" :class="isSelected ? 'text-green-darken-4' : 'text-grey-darken-3'">{{ pkg }}</span>
+                      <span class="text-caption font-weight-bold pr-2" :class="isSelected ? 'text-green-darken-4' : 'text-grey-darken-3'" style="font-size: 0.75rem !important;">{{ pkg }}</span>
+
+                      <div v-if="getPackagePrice(pkg)" class="ml-1 mr-1 px-2 py-0 rounded-md" :class="isSelected ? 'bg-green-lighten-4' : 'bg-grey-lighten-4'">
+                        <span class="text-caption font-weight-bold" :class="isSelected ? 'text-green-darken-4' : 'text-grey-darken-2'" style="font-size: 0.65rem !important;">{{ getPackagePrice(pkg) }}</span>
+                      </div>
                     </v-card>
                   </v-item>
                 </v-item-group>
@@ -495,6 +499,24 @@ const extractKmFromTripType = (tripType) => {
   return match ? parseInt(match[1]) : 0
 }
 
+const getPackagePrice = (pkg) => {
+  const vehicle = store.form.vehicleName || '21 Paks (2+1) AC Deluxe(TATA)'
+  const pricing = vehiclePricing[vehicle]
+  if (!pricing) return ''
+
+  if (store.form.serviceType === 'local') {
+    const km = extractKmFromTripType(pkg)
+    if (km > 0) {
+      const multiplier = km / 40
+      const price = pricing.localPrice * multiplier
+      return `₹${price.toLocaleString('en-IN')}`
+    }
+  } else {
+    return `from ₹${pricing.outstationPrice}/km`
+  }
+  return ''
+}
+
 const computedFare = computed(() => {
   const vehicle = store.form.vehicleName
   const pricing = vehiclePricing[vehicle]
@@ -506,9 +528,12 @@ const computedFare = computed(() => {
   if (serviceType === 'local') {
     const packageKm = extractKmFromTripType(tripType)
     if (packageKm > 0) {
+      const multiplier = packageKm / 40
+      const newPriceCalc = pricing.localPrice * multiplier
+      const oldPriceCalc = pricing.localOldPrice * multiplier
       return {
-        oldPrice: pricing.localOldPrice.toLocaleString('en-IN'),
-        newPrice: pricing.localPrice.toLocaleString('en-IN'),
+        oldPrice: oldPriceCalc.toLocaleString('en-IN'),
+        newPrice: newPriceCalc.toLocaleString('en-IN'),
         breakdown: `${vehicle.split('(')[0].trim()} • ${packageKm} km local package`
       }
     }
@@ -668,6 +693,27 @@ const submitForm = async () => {
 .icon-square-active {
   background-color: #709C34;
   box-shadow: 0 4px 8px rgba(112, 156, 52, 0.3);
+}
+
+.package-scroll-container {
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  padding-bottom: 5px;
+  scrollbar-width: none;
+}
+.package-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.package-animated {
+  flex-shrink: 0;
+  animation: slideFadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.25) backwards;
+  transform-origin: center;
+}
+
+@keyframes slideFadeUp {
+  0% { transform: translateY(25px) scale(0.9); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 .service-check-badge-clean {
