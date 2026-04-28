@@ -21,34 +21,64 @@
           <v-item-group
             v-model="store.form.serviceType"
             selected-class="service-item-selected"
-            class="d-flex flex-wrap mb-6"
-            style="gap: 16px;"
+            class="mb-6"
           >
-            <v-item
-              v-for="(service, index) in serviceTypes"
-              :key="service.value"
-              :value="service.value"
-              v-slot="{ isSelected, toggle }"
-            >
-              <v-card
-                :class="['service-card', { 'service-item-selected': isSelected }]"
-                :style="{ animationDelay: `${index * 0.1}s` }"
-                @click="toggle"
-                elevation="1"
-                variant="outlined"
-                class="d-flex flex-column align-center justify-center pa-3 text-center"
-                height="100"
-                width="110"
-                rounded="xl"
-              >
-                <div class="icon-wrapper mb-2" :class="{ 'icon-bounce': isSelected }">
-                  <v-icon :size="32" :color="isSelected ? '#709C34' : 'grey-darken-1'">{{ service.icon }}</v-icon>
-                </div>
-                <div class="text-caption font-weight-bold" :class="isSelected ? 'text-green-darken-3' : 'text-grey-darken-2'" style="line-height: 1.2">{{ service.label }}</div>
-                
-                <v-icon v-if="isSelected" color="#709C34" size="18" class="service-check-badge">mdi-check-circle-outline</v-icon>
-              </v-card>
-            </v-item>
+            <div class="marquee-wrapper">
+              <div class="marquee-track">
+                <!-- Original Items -->
+                <v-item
+                  v-for="(service, index) in serviceTypes"
+                  :key="service.value"
+                  :value="service.value"
+                  v-slot="{ isSelected, toggle }"
+                >
+                  <div class="service-card-wrapper">
+                    <v-card
+                      :class="['service-card', { 'service-item-selected': isSelected }]"
+                      @click="toggle"
+                      elevation="0"
+                      class="d-flex flex-column align-center justify-center pa-1 text-center 3d-box"
+                      height="74"
+                      width="74"
+                      rounded="xl"
+                    >
+                      <div class="icon-wrapper mb-1">
+                        <v-icon :size="24" :color="isSelected ? '#709C34' : 'grey-darken-2'">{{ service.icon }}</v-icon>
+                      </div>
+                      <div class="text-caption font-weight-bold" :class="isSelected ? 'text-green-darken-3' : 'text-grey-darken-3'" style="line-height: 1.1; font-size: 0.65rem !important;">{{ service.label }}</div>
+                      
+                      <v-icon v-if="isSelected" color="#ffffff" size="14" class="service-check-badge">mdi-check</v-icon>
+                    </v-card>
+                  </div>
+                </v-item>
+                <!-- Duplicate Items for seamless marquee -->
+                <v-item
+                  v-for="(service, index) in serviceTypes"
+                  :key="service.value + '-dup'"
+                  :value="service.value"
+                  v-slot="{ isSelected, toggle }"
+                >
+                  <div class="service-card-wrapper">
+                    <v-card
+                      :class="['service-card', { 'service-item-selected': isSelected }]"
+                      @click="toggle"
+                      elevation="0"
+                      class="d-flex flex-column align-center justify-center pa-1 text-center 3d-box"
+                      height="74"
+                      width="74"
+                      rounded="xl"
+                    >
+                      <div class="icon-wrapper mb-1">
+                        <v-icon :size="24" :color="isSelected ? '#709C34' : 'grey-darken-2'">{{ service.icon }}</v-icon>
+                      </div>
+                      <div class="text-caption font-weight-bold" :class="isSelected ? 'text-green-darken-3' : 'text-grey-darken-3'" style="line-height: 1.1; font-size: 0.65rem !important;">{{ service.label }}</div>
+                      
+                      <v-icon v-if="isSelected" color="#ffffff" size="14" class="service-check-badge">mdi-check</v-icon>
+                    </v-card>
+                  </div>
+                </v-item>
+              </div>
+            </div>
           </v-item-group>
 
           <transition name="fade-transition">
@@ -550,44 +580,95 @@ const submitForm = async () => {
 .form-card {
   font-family: inherit;
 }
-.service-card {
+.marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
   position: relative;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 15px 0 25px 0;
+  border-radius: 12px;
+}
+
+.marquee-wrapper::before,
+.marquee-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 30px;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+.marquee-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, white, transparent);
+}
+.marquee-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, white, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 14px;
+  width: fit-content;
+  animation: scrollLeft 18s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  /* Translate exactly by 50% plus half the gap size to perfectly loop the two groups */
+  100% { transform: translateX(calc(-50% - 7px)); }
+}
+
+.service-card-wrapper {
+  flex-shrink: 0;
+}
+
+.service-card {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  animation: slideFadeIn 0.6s backwards;
+  background-color: #f6f8f9;
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow: 
+    -5px -5px 10px rgba(255,255,255,1), 
+    5px 5px 10px rgba(0,0,0,0.06),
+    inset 1px 1px 2px rgba(255,255,255,0.8),
+    inset -1px -1px 2px rgba(0,0,0,0.03);
 }
+
 .service-card:hover {
-  transform: translateY(-5px);
-  border-color: #aed581;
-  box-shadow: 0 8px 16px rgba(112, 156, 52, 0.12) !important;
-  background-color: #fcfdfa;
+  transform: translateY(-5px) scale(1.15);
+  background-color: #f7faf3;
+  z-index: 10;
+  box-shadow: 
+    -6px -6px 12px rgba(255,255,255,1), 
+    8px 12px 20px rgba(112, 156, 52, 0.18),
+    inset 1px 1px 2px rgba(255,255,255,0.9);
+  border-color: #709C34;
 }
+
 .service-item-selected {
-  background: linear-gradient(145deg, #f2f7ec, #ffffff) !important;
-  border: 2px solid #709C34 !important;
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 10px 20px rgba(112, 156, 52, 0.2) !important;
+  background-color: #eef4e6 !important;
+  border: 1px solid #709C34 !important;
+  transform: translateY(2px) scale(1.05) !important;
+  box-shadow: 
+    inset 4px 4px 8px rgba(112, 156, 52, 0.15),
+    inset -4px -4px 8px rgba(255,255,255,0.7),
+    0px 2px 5px rgba(112, 156, 52, 0.25) !important;
 }
+
 .service-check-badge {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  background: white;
+  top: -6px;
+  right: -6px;
+  background: #709C34;
+  border: 2px solid white;
   border-radius: 50%;
   animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.icon-bounce {
-  animation: float 2.5s infinite ease-in-out;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-@keyframes slideFadeIn {
-  0% { transform: translateY(15px) scale(0.95); opacity: 0; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 .package-card-premium {
