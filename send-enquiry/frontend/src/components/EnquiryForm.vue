@@ -18,28 +18,74 @@
       <transition name="fade-transition" mode="out-in">
         <div v-show="currentStep === 1" key="step1">
           <label class="form-label font-weight-medium text-grey-darken-3 d-block mb-3">What kind of service do you need?</label>
-          <v-chip-group
+          <v-item-group
             v-model="store.form.serviceType"
-            selected-class="selected-chip"
-            class="mb-6 service-chips-group"
+            selected-class="service-item-selected"
+            class="d-flex flex-wrap mb-6"
+            style="gap: 16px;"
           >
-            <v-chip
-              v-for="service in serviceTypes"
+            <v-item
+              v-for="(service, index) in serviceTypes"
               :key="service.value"
               :value="service.value"
-              variant="outlined"
-              size="large"
-              class="ma-1 font-weight-medium px-4 text-grey-darken-2 service-chip"
-              rounded="lg"
+              v-slot="{ isSelected, toggle }"
             >
-              <v-icon start size="18" class="service-icon">{{ service.icon }}</v-icon>
-              {{ service.label }}
-              <v-icon end size="16" color="#709C34" v-if="store.form.serviceType === service.value" class="service-check">mdi-check-circle</v-icon>
-            </v-chip>
-          </v-chip-group>
+              <v-card
+                :class="['service-card', { 'service-item-selected': isSelected }]"
+                :style="{ animationDelay: `${index * 0.1}s` }"
+                @click="toggle"
+                elevation="1"
+                variant="outlined"
+                class="d-flex flex-column align-center justify-center pa-3 text-center"
+                height="100"
+                width="110"
+                rounded="xl"
+              >
+                <div class="icon-wrapper mb-2" :class="{ 'icon-bounce': isSelected }">
+                  <v-icon :size="32" :color="isSelected ? '#709C34' : 'grey-darken-1'">{{ service.icon }}</v-icon>
+                </div>
+                <div class="text-caption font-weight-bold" :class="isSelected ? 'text-green-darken-3' : 'text-grey-darken-2'" style="line-height: 1.2">{{ service.label }}</div>
+                
+                <v-icon v-if="isSelected" color="#709C34" size="18" class="service-check-badge">mdi-check-circle-outline</v-icon>
+              </v-card>
+            </v-item>
+          </v-item-group>
 
           <transition name="fade-transition">
             <div v-if="store.form.serviceType" class="mt-2">
+              <!-- Service Packages -->
+              <div class="mb-5">
+                <label class="form-label font-weight-medium text-grey-darken-3 d-block mb-3">Service Packages</label>
+                <v-item-group
+                  v-model="store.form.tripType"
+                  class="d-flex flex-wrap"
+                  style="gap: 16px;"
+                  selected-class="selected-package-premium"
+                >
+                  <v-item
+                    v-for="(pkg, index) in tripTypeItems"
+                    :key="pkg"
+                    :value="pkg"
+                    v-slot="{ isSelected, toggle }"
+                  >
+                    <v-card
+                      :class="['package-card-premium', { 'selected-package-premium': isSelected }]"
+                      :style="{ animationDelay: `${index * 0.08}s` }"
+                      @click="toggle"
+                      elevation="1"
+                      rounded="lg"
+                    >
+                      <div class="d-flex align-center px-4 py-3">
+                        <v-icon :color="isSelected ? '#709C34' : 'grey-lighten-1'" size="20" class="mr-3">
+                          {{ isSelected ? 'mdi-check-circle' : 'mdi-circle-outline' }}
+                        </v-icon>
+                        <span class="text-body-2 font-weight-bold" :class="isSelected ? 'text-green-darken-3' : 'text-grey-darken-3'">{{ pkg }}</span>
+                      </div>
+                    </v-card>
+                  </v-item>
+                </v-item-group>
+              </div>
+
               <label class="form-label font-weight-medium text-grey-darken-3 d-block mb-3">Vehicle Details</label>
               
               <!-- Service Specific Fields -->
@@ -504,40 +550,79 @@ const submitForm = async () => {
 .form-card {
   font-family: inherit;
 }
-.service-chips-group {
-  flex-wrap: nowrap !important;
-  overflow-x: auto;
-  scrollbar-width: none; /* Firefox */
+.service-card {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  animation: slideFadeIn 0.6s backwards;
 }
-.service-chips-group::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+.service-card:hover {
+  transform: translateY(-5px);
+  border-color: #aed581;
+  box-shadow: 0 8px 16px rgba(112, 156, 52, 0.12) !important;
+  background-color: #fcfdfa;
 }
-.service-chip {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  flex-shrink: 0;
+.service-item-selected {
+  background: linear-gradient(145deg, #f2f7ec, #ffffff) !important;
+  border: 2px solid #709C34 !important;
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(112, 156, 52, 0.2) !important;
 }
-.selected-chip {
-  background-color: #f2f7ec !important;
-  color: #709C34 !important;
-  border-color: #709C34 !important;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(112, 156, 52, 0.15);
+.service-check-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.selected-chip .service-icon {
-  animation: bounce 0.4s ease;
+.icon-bounce {
+  animation: float 2.5s infinite ease-in-out;
 }
-.service-check {
-  animation: pop-in 0.3s ease;
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes slideFadeIn {
+  0% { transform: translateY(15px) scale(0.95); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
 }
 
-@keyframes bounce {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-4px); color: #709C34; }
-  100% { transform: translateY(0); }
+.package-card-premium {
+  position: relative;
+  cursor: pointer;
+  background: white;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  animation: slideFadeIn 0.5s backwards;
+  overflow: hidden;
+  min-width: max-content;
 }
+.package-card-premium:hover {
+  border-color: #709C34;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(112, 156, 52, 0.08) !important;
+}
+.selected-package-premium {
+  background-color: #f7faf3 !important;
+  border: 2px solid #709C34 !important;
+  box-shadow: 0 6px 16px rgba(112, 156, 52, 0.15) !important;
+}
+.selected-package-premium::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: #709C34;
+}
+
 @keyframes pop-in {
   0% { transform: scale(0); opacity: 0; }
-  70% { transform: scale(1.2); opacity: 1; }
+  80% { transform: scale(1.2); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
 
