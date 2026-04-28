@@ -64,7 +64,16 @@
         </v-menu>
 
         <v-btn variant="text" to="/payment" class="nav-btn" prepend-icon="mdi-headset">Help Support</v-btn>
-        <v-btn variant="text" to="/send-enquiry" :active="false" class="nav-btn">Manage Booking</v-btn>
+        
+        <!-- Manage Booking Dropdown -->
+        <v-menu open-on-hover transition="slide-y-transition" :close-delay="100">
+          <template v-slot:activator="{ props }">
+            <v-btn variant="text" v-bind="props" to="/send-enquiry" :active="false" class="nav-btn" append-icon="mdi-chevron-down">Manage Booking</v-btn>
+          </template>
+          <v-list class="dropdown-list py-2" bg-color="white" elevation="4">
+            <!-- No content as requested -->
+          </v-list>
+        </v-menu>
         
         <!-- Book Now Dropdown -->
         <v-menu open-on-hover transition="slide-y-transition" :close-delay="100">
@@ -153,7 +162,13 @@
       </v-list-group>
 
       <v-list-item to="/payment" prepend-icon="mdi-headset" title="Help Support" class="mb-1"></v-list-item>
-      <v-list-item to="/send-enquiry" :active="false" title="Manage Booking" class="mb-1"></v-list-item>
+      
+      <v-list-group value="Manage Booking">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props" to="/send-enquiry" :active="false" title="Manage Booking" class="mb-1"></v-list-item>
+        </template>
+        <!-- No content as requested -->
+      </v-list-group>
       
       <v-list-group value="Book Now">
         <template v-slot:activator="{ props }">
