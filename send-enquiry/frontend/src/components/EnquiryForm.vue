@@ -34,20 +34,22 @@
                 >
                   <div class="service-card-wrapper">
                     <v-card
-                      :class="['service-card', { 'service-item-selected': isSelected }]"
+                      :class="['service-card-clean', { 'service-item-selected-clean': isSelected }]"
                       @click="toggle"
                       elevation="0"
-                      class="d-flex flex-column align-center justify-center pa-1 text-center 3d-box"
-                      height="74"
-                      width="74"
+                      class="d-flex flex-column align-center justify-center pa-2 text-center"
+                      height="104"
+                      width="100"
                       rounded="xl"
                     >
-                      <div class="icon-wrapper mb-1">
-                        <v-icon :size="24" :color="isSelected ? '#709C34' : 'grey-darken-2'">{{ service.icon }}</v-icon>
+                      <div class="icon-square mb-2" :class="{ 'icon-square-active': isSelected }">
+                        <v-icon :size="26" :color="isSelected ? 'white' : '#709C34'">{{ service.icon }}</v-icon>
                       </div>
-                      <div class="text-caption font-weight-bold" :class="isSelected ? 'text-green-darken-3' : 'text-grey-darken-3'" style="line-height: 1.1; font-size: 0.65rem !important;">{{ service.label }}</div>
+                      <div class="text-caption font-weight-bold" :class="isSelected ? 'text-green-darken-4' : 'text-grey-darken-3'" style="line-height: 1.15; font-size: 0.7rem !important;">{{ service.label }}</div>
                       
-                      <v-icon v-if="isSelected" color="#ffffff" size="14" class="service-check-badge">mdi-check</v-icon>
+                      <div v-if="isSelected" class="service-check-badge-clean">
+                        <v-icon color="#ffffff" size="12">mdi-check</v-icon>
+                      </div>
                     </v-card>
                   </div>
                 </v-item>
@@ -60,20 +62,22 @@
                 >
                   <div class="service-card-wrapper">
                     <v-card
-                      :class="['service-card', { 'service-item-selected': isSelected }]"
+                      :class="['service-card-clean', { 'service-item-selected-clean': isSelected }]"
                       @click="toggle"
                       elevation="0"
-                      class="d-flex flex-column align-center justify-center pa-1 text-center 3d-box"
-                      height="74"
-                      width="74"
+                      class="d-flex flex-column align-center justify-center pa-2 text-center"
+                      height="104"
+                      width="100"
                       rounded="xl"
                     >
-                      <div class="icon-wrapper mb-1">
-                        <v-icon :size="24" :color="isSelected ? '#709C34' : 'grey-darken-2'">{{ service.icon }}</v-icon>
+                      <div class="icon-square mb-2" :class="{ 'icon-square-active': isSelected }">
+                        <v-icon :size="26" :color="isSelected ? 'white' : '#709C34'">{{ service.icon }}</v-icon>
                       </div>
-                      <div class="text-caption font-weight-bold" :class="isSelected ? 'text-green-darken-3' : 'text-grey-darken-3'" style="line-height: 1.1; font-size: 0.65rem !important;">{{ service.label }}</div>
+                      <div class="text-caption font-weight-bold" :class="isSelected ? 'text-green-darken-4' : 'text-grey-darken-3'" style="line-height: 1.15; font-size: 0.7rem !important;">{{ service.label }}</div>
                       
-                      <v-icon v-if="isSelected" color="#ffffff" size="14" class="service-check-badge">mdi-check</v-icon>
+                      <div v-if="isSelected" class="service-check-badge-clean">
+                        <v-icon color="#ffffff" size="12">mdi-check</v-icon>
+                      </div>
                     </v-card>
                   </div>
                 </v-item>
@@ -99,18 +103,19 @@
                     v-slot="{ isSelected, toggle }"
                   >
                     <v-card
-                      :class="['package-card-premium', { 'selected-package-premium': isSelected }]"
+                      :class="['service-card-clean', { 'service-item-selected-clean': isSelected }]"
                       :style="{ animationDelay: `${index * 0.08}s` }"
                       @click="toggle"
-                      elevation="1"
-                      rounded="lg"
+                      elevation="0"
+                      class="d-flex align-center px-2 py-2"
+                      rounded="xl"
                     >
-                      <div class="d-flex align-center px-4 py-3">
-                        <v-icon :color="isSelected ? '#709C34' : 'grey-lighten-1'" size="20" class="mr-3">
-                          {{ isSelected ? 'mdi-check-circle' : 'mdi-circle-outline' }}
+                      <div class="icon-square mr-3" :class="{ 'icon-square-active': isSelected }" style="width: 40px; height: 40px; border-radius: 10px;">
+                        <v-icon :color="isSelected ? 'white' : '#709C34'" size="20">
+                          {{ isSelected ? 'mdi-check' : 'mdi-circle-outline' }}
                         </v-icon>
-                        <span class="text-body-2 font-weight-bold" :class="isSelected ? 'text-green-darken-3' : 'text-grey-darken-3'">{{ pkg }}</span>
                       </div>
+                      <span class="text-body-2 font-weight-bold pr-3" :class="isSelected ? 'text-green-darken-4' : 'text-grey-darken-3'">{{ pkg }}</span>
                     </v-card>
                   </v-item>
                 </v-item-group>
@@ -628,69 +633,85 @@ const submitForm = async () => {
   flex-shrink: 0;
 }
 
-.service-card {
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.service-card-clean {
+  position: relative;
+  transition: all 0.3s ease;
   cursor: pointer;
-  background-color: #f6f8f9;
-  border: 1px solid rgba(255,255,255,0.7);
-  box-shadow: 
-    -5px -5px 10px rgba(255,255,255,1), 
-    5px 5px 10px rgba(0,0,0,0.06),
-    inset 1px 1px 2px rgba(255,255,255,0.8),
-    inset -1px -1px 2px rgba(0,0,0,0.03);
+  background-color: #ffffff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
-.service-card:hover {
-  transform: translateY(-5px) scale(1.15);
-  background-color: #f7faf3;
-  z-index: 10;
-  box-shadow: 
-    -6px -6px 12px rgba(255,255,255,1), 
-    8px 12px 20px rgba(112, 156, 52, 0.18),
-    inset 1px 1px 2px rgba(255,255,255,0.9);
-  border-color: #709C34;
+.service-card-clean:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  border-color: #b8d494;
 }
 
-.service-item-selected {
-  background-color: #eef4e6 !important;
+.service-item-selected-clean {
+  background-color: #f4f8f0 !important;
   border: 1px solid #709C34 !important;
-  transform: translateY(2px) scale(1.05) !important;
-  box-shadow: 
-    inset 4px 4px 8px rgba(112, 156, 52, 0.15),
-    inset -4px -4px 8px rgba(255,255,255,0.7),
-    0px 2px 5px rgba(112, 156, 52, 0.25) !important;
+  box-shadow: 0 4px 12px rgba(112, 156, 52, 0.15) !important;
 }
 
-.service-check-badge {
+.icon-square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background-color: #f0f4ea;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.icon-square-active {
+  background-color: #709C34;
+  box-shadow: 0 4px 8px rgba(112, 156, 52, 0.3);
+}
+
+.service-check-badge-clean {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #709C34;
-  border: 2px solid white;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #709C34;
   border-radius: 50%;
-  animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid white;
+  animation: pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .package-card-premium {
   position: relative;
   cursor: pointer;
-  background: white;
-  border: 1px solid #e0e0e0;
-  transition: all 0.3s ease;
-  animation: slideFadeIn 0.5s backwards;
+  background: linear-gradient(to bottom, #ffffff, #fcfcfc);
+  border: 1px solid rgba(0,0,0,0.06);
+  /* Packaging thickness */
+  border-bottom: 3px solid #e0e6ed;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
   min-width: max-content;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.02);
 }
+
 .package-card-premium:hover {
-  border-color: #709C34;
+  border-bottom-color: #a3c47a;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(112, 156, 52, 0.08) !important;
+  box-shadow: 0 8px 16px rgba(112, 156, 52, 0.08) !important;
 }
+
 .selected-package-premium {
-  background-color: #f7faf3 !important;
-  border: 2px solid #709C34 !important;
-  box-shadow: 0 6px 16px rgba(112, 156, 52, 0.15) !important;
+  background: linear-gradient(to bottom, #f7faf3, #edf4e3) !important;
+  border: 1px solid #709C34 !important;
+  border-bottom: 1px solid #587d27 !important;
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
 }
+
 .selected-package-premium::before {
   content: '';
   position: absolute;
@@ -698,7 +719,7 @@ const submitForm = async () => {
   top: 0;
   height: 100%;
   width: 4px;
-  background-color: #709C34;
+  background: linear-gradient(to bottom, #8cbd4f, #709C34);
 }
 
 @keyframes pop-in {
