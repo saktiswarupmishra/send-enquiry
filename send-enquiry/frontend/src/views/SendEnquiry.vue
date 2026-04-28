@@ -4,7 +4,7 @@
       <!-- Header -->
       <v-row class="mb-6">
         <v-col cols="12" class="text-center">
-          <h1 class="text-h4 font-weight-black text-grey-darken-4 mb-2" style="font-family: 'Inter', sans-serif;">Manage Booking</h1>
+          <h1 class="text-h4 font-weight-black text-grey-darken-4 mb-2" style="font-family: 'Inter', sans-serif;">Send an Enquiry</h1>
           <p class="text-subtitle-1 text-grey-darken-1 font-weight-medium">"Book Bus, Tempo Traveller & Car at Best Price in Delhi NCR"</p>
         </v-col>
       </v-row>
