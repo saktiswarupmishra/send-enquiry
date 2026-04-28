@@ -25,10 +25,6 @@
 
       <!-- Desktop Navigation Links -->
       <div class="d-none d-lg-flex align-center navigation-links">
-        <v-btn icon to="/" title="Home" class="nav-btn mr-2" variant="text">
-          <v-icon size="28" color="primary" class="moving-bus-icon">mdi-bus-side</v-icon>
-        </v-btn>
-
         <!-- Bus Hire Dropdown -->
         <v-menu open-on-hover transition="slide-y-transition" :close-delay="100">
           <template v-slot:activator="{ props }">
@@ -68,17 +64,16 @@
         </v-menu>
 
         <v-btn variant="text" to="/payment" class="nav-btn" prepend-icon="mdi-headset">Help Support</v-btn>
-        <v-btn variant="text" to="/send-enquiry" :active="false" class="nav-btn" prepend-icon="mdi-calendar-check-outline">Manage Booking</v-btn>
+        <v-btn variant="text" to="/send-enquiry" :active="false" class="nav-btn">Manage Booking</v-btn>
         
         <!-- Book Now Dropdown -->
         <v-menu open-on-hover transition="slide-y-transition" :close-delay="100">
           <template v-slot:activator="{ props }">
             <v-btn 
-              variant="flat" 
-              color="primary" 
+              variant="flat"
+              color="primary"
               v-bind="props"
-              class="nav-btn ml-2 px-6 rounded-pill text-white fw-bold" 
-              prepend-icon="mdi-bookmark-check"
+              class="nav-btn ml-2 px-6 rounded-pill text-white font-weight-bold" 
               append-icon="mdi-chevron-down"
             >
               Book Now
@@ -134,13 +129,6 @@
         </v-btn>
     </div>
     <v-list nav class="mt-2">
-      <v-list-item to="/" class="mb-1">
-        <template v-slot:prepend>
-          <v-icon class="moving-bus-icon mr-5" color="primary">mdi-bus-side</v-icon>
-        </template>
-        <v-list-item-title>Home</v-list-item-title>
-      </v-list-item>
-
       <v-list-group value="Bus Hire">
         <template v-slot:activator="{ props }">
           <v-list-item v-bind="props" prepend-icon="mdi-bus" title="Bus Hire" class="mb-1"></v-list-item>
@@ -165,11 +153,11 @@
       </v-list-group>
 
       <v-list-item to="/payment" prepend-icon="mdi-headset" title="Help Support" class="mb-1"></v-list-item>
-      <v-list-item to="/send-enquiry" :active="false" prepend-icon="mdi-calendar-check-outline" title="Manage Booking" class="mb-1"></v-list-item>
+      <v-list-item to="/send-enquiry" :active="false" title="Manage Booking" class="mb-1"></v-list-item>
       
       <v-list-group value="Book Now">
         <template v-slot:activator="{ props }">
-          <v-list-item v-bind="props" prepend-icon="mdi-bookmark-check" title="Book Now" class="mb-1"></v-list-item>
+          <v-list-item v-bind="props" title="Book Now" class="mb-1"></v-list-item>
         </template>
         <v-list-item 
           v-for="(service, i) in serviceTypes" 
